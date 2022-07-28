@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\projects\\aims-pos-api\\GatewayApi\\GatewayApi.csproj": {}
+    "E:\\sajid-pos\\sajid-pos-api\\GatewayApi\\GatewayApi.csproj": {}
   },
   "projects": {
-    "E:\\projects\\aims-pos-api\\GatewayApi\\GatewayApi.csproj": {
+    "E:\\sajid-pos\\sajid-pos-api\\GatewayApi\\GatewayApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\aims-pos-api\\GatewayApi\\GatewayApi.csproj",
+        "projectUniqueName": "E:\\sajid-pos\\sajid-pos-api\\GatewayApi\\GatewayApi.csproj",
         "projectName": "GatewayApi",
-        "projectPath": "E:\\projects\\aims-pos-api\\GatewayApi\\GatewayApi.csproj",
-        "packagesPath": "C:\\Users\\sys\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\aims-pos-api\\GatewayApi\\obj\\",
+        "projectPath": "E:\\sajid-pos\\sajid-pos-api\\GatewayApi\\GatewayApi.csproj",
+        "packagesPath": "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\",
+        "outputPath": "E:\\sajid-pos\\sajid-pos-api\\GatewayApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\sys\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\CCS LAPTOP HYD\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\projects\\aims-pos-api\\fmismoduleapi\\FMISModuleApi.csproj": {}
+    "E:\\sajid-pos\\sajid-pos-api\\FMISModuleApi\\FMISModuleApi.csproj": {}
   },
   "projects": {
-    "E:\\projects\\aims-pos-api\\fmismoduleapi\\FMISModuleApi.csproj": {
+    "E:\\sajid-pos\\sajid-pos-api\\FMISModuleApi\\FMISModuleApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\aims-pos-api\\fmismoduleapi\\FMISModuleApi.csproj",
+        "projectUniqueName": "E:\\sajid-pos\\sajid-pos-api\\FMISModuleApi\\FMISModuleApi.csproj",
         "projectName": "FMISModuleApi",
-        "projectPath": "E:\\projects\\aims-pos-api\\fmismoduleapi\\FMISModuleApi.csproj",
-        "packagesPath": "C:\\Users\\sys\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\aims-pos-api\\fmismoduleapi\\obj\\",
+        "projectPath": "E:\\sajid-pos\\sajid-pos-api\\FMISModuleApi\\FMISModuleApi.csproj",
+        "packagesPath": "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\",
+        "outputPath": "E:\\sajid-pos\\sajid-pos-api\\FMISModuleApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\sys\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\CCS LAPTOP HYD\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

@@ -1,21 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "w6RqiYhrsivjza6YAXo5EEeSrMmd/nd3r5OFbdwrO2NOjVzrMAtPKaPOnDYY6bGCtiWDd6AzpbVlhnSCmztgNg==",
+  "dgSpecHash": "0e9yeMCqdhSsVpdesMMh6dvdtT0I2FXFEmNx2QXemL0m/Nk2Czk6PHG89mZHvl/wElR+2fxg4EoCegwsG8ImkQ==",
   "success": true,
-  "projectFilePath": "E:\\projects\\aims-pos-api\\cmismoduleapi\\CMISModuleApi.csproj",
+  "projectFilePath": "E:\\sajid-pos\\sajid-pos-api\\CMISModuleApi\\CMISModuleApi.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\sys\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.1\\microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\npgsql\\6.0.0\\npgsql.6.0.0.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512",
-    "C:\\Users\\sys\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.1\\microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\npgsql\\6.0.0\\npgsql.6.0.0.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512",
+    "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
