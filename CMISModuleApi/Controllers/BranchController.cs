@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using CMISModuleApi.Services;
 using Microsoft.Extensions.Options;
 using CMISModuleApi.Configuration;
-using CMISModuleApi.Entities;
+// using CMISModuleApi.Entities;
 using Dapper;
 using System.Data;
 using Npgsql;
@@ -25,20 +25,20 @@ namespace CMISModuleApi.Controllers
             _dbCon = dbCon;
         }
 
-        [HttpGet("getBranch")]
-        public IActionResult getBranch()
-        {
-            try
-            {
-                cmd = "SELECT * FROM public.branch where \"isDeleted\"::int = 0";
-                var appMenu = dapperQuery.Qry<Branch>(cmd, _dbCon);
-                return Ok(appMenu);
-            }
-            catch (Exception e)
-            {
-                return Ok(e);
-            }
-        }
+        // [HttpGet("getBranch")]
+        // public IActionResult getBranch()
+        // {
+        //     try
+        //     {
+        //         cmd = "SELECT * FROM public.branch where \"isDeleted\"::int = 0";
+        //         var appMenu = dapperQuery.Qry<Branch>(cmd, _dbCon);
+        //         return Ok(appMenu);
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         return Ok(e);
+        //     }
+        // }
 
     }
 }
