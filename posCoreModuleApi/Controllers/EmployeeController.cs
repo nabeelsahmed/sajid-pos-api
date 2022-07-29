@@ -67,7 +67,7 @@ namespace posCoreModuleApi.Controllers
                 {
                     if (employeeName == "")
                     {
-                        cmd = "insert into public.\"party\" (\"designationID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"mobile\", \"type\", \"description\", \"cnic\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.designationID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.outletid + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd = "insert into public.\"party\" (\"designationID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"mobile\", \"type\", \"description\", \"cnic\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.designationID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.outletid + "', '" + curDate + "', " + obj.userID + ", B'0')";
                     }
                     else
                     {
