@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/CMISModuleApi/bin/Debug/net5.0/CMISModuleApi.dll",
+            "program": "${workspaceFolder}/posCoreModuleApi/bin/Debug/net5.0/posCoreModuleApi.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/CMISModuleApi",
+            "cwd": "${workspaceFolder}/posCoreModuleApi",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

@@ -29,5 +29,6 @@ namespace posCoreModuleApi.Entities
         public string lcType { get; set; }
         public float lcAmount { get; set; }
         public int isDeleted { get; set; }
+        public int outletid { get; set; }
     }
 }

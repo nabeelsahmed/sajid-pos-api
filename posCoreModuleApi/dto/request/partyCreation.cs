@@ -22,5 +22,6 @@ namespace posCoreModuleApi.Entities
         public string focalPerson { get; set; }
         public string branchID { get; set; }
         public int userID { get; set; }
+        public int outletid { get; set; }
     }
 }

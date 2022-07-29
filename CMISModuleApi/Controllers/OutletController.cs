@@ -78,7 +78,7 @@ namespace CMISModuleApi.Controllers
                 }
                 else
                 {
-                    cmd = "UPDATE INTO public.outlet set \"outletName\" = '"+obj.outletName+"', \"outletShortName\"='"+obj.outletShortName+"', \"outletAddress\"='"+obj.outletAddress+"',\"contactPerson\"='"+obj.contactPerson+"',\"phoneNo\"='"+obj.phoneNo+"',\"mobileNo\"='"+obj.mobileNo+"',\"email\"='"+obj.email+"',\"modifiedOn\"='"+curDate+"',\"modifiedBy\"="+obj.userID+"";
+                    cmd = "UPDATE public.outlet set \"outletName\" = '"+obj.outletName+"', \"outletShortName\"='"+obj.outletShortName+"', \"outletAddress\"='"+obj.outletAddress+"',\"contactPerson\"='"+obj.contactPerson+"',\"phoneNo\"='"+obj.phoneNo+"',\"mobileNo\"='"+obj.mobileNo+"',\"email\"='"+obj.email+"',\"modifiedOn\"='"+curDate+"',\"modifiedBy\"="+obj.userID+"";
                 }
 
                 if (found == false)
@@ -112,7 +112,7 @@ namespace CMISModuleApi.Controllers
                 return Ok(e);
             }
         }
-        [HttpPost("deleteCity")]
+        [HttpPost("deleteOutlet")]
         public IActionResult deleteOutlet(outletCreation obj)
         {
             try
