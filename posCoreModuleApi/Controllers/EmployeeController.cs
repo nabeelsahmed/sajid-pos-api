@@ -67,7 +67,7 @@ namespace posCoreModuleApi.Controllers
                 {
                     if (employeeName == "")
                     {
-                        cmd = "insert into public.\"party\" (\"designationID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"mobile\", \"type\", \"description\", \"cnic\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.designationID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd = "insert into public.\"party\" (\"designationID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"mobile\", \"type\", \"description\", \"cnic\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.designationID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.outletid + "', '" + curDate + "', " + obj.userID + ", B'0')";
                     }
                     else
                     {
@@ -76,7 +76,7 @@ namespace posCoreModuleApi.Controllers
                 }
                 else
                 {
-                    cmd = "update public.\"party\" set \"designationID\" = '" + obj.designationID + "', \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"branchID\" = '" + obj.branchID + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"partyID\" = " + obj.partyID + ";";
+                    cmd = "update public.\"party\" set \"designationID\" = '" + obj.designationID + "', \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"outletid\" = '" + obj.outletid + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"partyID\" = " + obj.partyID + ";";
                 }
 
                 if (found == false)

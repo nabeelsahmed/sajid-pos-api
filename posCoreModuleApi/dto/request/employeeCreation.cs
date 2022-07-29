@@ -8,7 +8,7 @@ namespace posCoreModuleApi.Entities
     {
         public int partyID { get; set; }
         public int designationID { get; set; }
-        public int branchID { get; set; }
+        public int outletid { get; set; }
         public int cityID { get; set; }
         public string partyName { get; set; }
         public string partyNameUrdu { get; set; }

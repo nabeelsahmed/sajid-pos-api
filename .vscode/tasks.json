@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/GatewayApi/GatewayApi.csproj",
+                "${workspaceFolder}/poscoreModuleApi/poscoreModuleApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
