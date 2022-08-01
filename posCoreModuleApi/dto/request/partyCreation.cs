@@ -10,6 +10,7 @@ namespace posCoreModuleApi.Entities
         public int rootID { get; set; }
         public int cityID { get; set; }
         public string partyName { get; set; }
+        public string partyType { get; set; }
         public string partyNameUrdu { get; set; }
         public string address { get; set; }
         public string addressUrdu { get; set; }

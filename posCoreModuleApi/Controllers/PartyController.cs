@@ -70,6 +70,7 @@ namespace posCoreModuleApi.Controllers
                 var response = "";
                 var found = false;
                 var cnic = "";
+                var outletid = 0;
 
                 List<Party> appMenuParty = new List<Party>();
                 cmd2 = "select cnic from party where \"isDeleted\"::int = 0 AND cnic = '" + obj.cnic + "' AND (\"type\" = 'supplier' OR \"type\" = 'customer')";
@@ -82,7 +83,7 @@ namespace posCoreModuleApi.Controllers
                 {
                     if (cnic == "")
                     {
-                        cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
                     }
                     else
                     {
@@ -91,7 +92,7 @@ namespace posCoreModuleApi.Controllers
                 }
                 else
                 {
-                    cmd = "update public.\"party\" set \"rootID\" = '" + obj.rootID + "', \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"phone\" = '" + obj.phone + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"focalperson\" = '" + obj.focalPerson + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"partyID\" = " + obj.partyID + ";";
+                    cmd = "update public.\"party\" set \"rootID\" = '" + obj.rootID + "', \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"phone\" = '" + obj.phone + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"focalperson\" = '" + obj.focalPerson + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + ", \"outletid\"="+obj.outletid+" where \"partyID\" = " + obj.partyID + ";";
                 }
 
                 if (found == false)
@@ -101,7 +102,14 @@ namespace posCoreModuleApi.Controllers
                         rowAffected = con.Execute(cmd);
                     }
                 }
-
+                if(obj.partyType=="outlet")
+                {
+                    outletid = obj.outletid;
+                }
+                else
+                {
+                    outletid = 0;
+                }
                 if (rowAffected > 0)
                 {
                     response = "Success";
@@ -117,8 +125,15 @@ namespace posCoreModuleApi.Controllers
                         response = "Server Issue";
                     }
                 }
+                if(outletid>0)
+                {
+                    return Ok(new { message = response, outletid });
+                }
+                else
+                {
+                    return Ok(new { message = response});
 
-                return Ok(new { message = response });
+                }
             }
             catch (Exception e)
             {
