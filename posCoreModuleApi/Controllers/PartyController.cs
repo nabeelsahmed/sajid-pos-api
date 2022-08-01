@@ -55,6 +55,21 @@ namespace posCoreModuleApi.Controllers
             }
         }
 
+        [HttpGet("getPartyOutlet")]
+        public IActionResult getPartyOutlet()
+        {
+            try
+            {
+                cmd = "select \"partyID\", \"partyName\", outletid, \"type\" from party  where \"type\" = 'outlet'";
+                var appMenu = dapperQuery.Qry<partyOutlet>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
         [HttpPost("saveParty")]
         public IActionResult saveParty(PartyCreation obj)
         {
@@ -63,14 +78,13 @@ namespace posCoreModuleApi.Controllers
                 DateTime curDate = DateTime.Today;
 
                 DateTime curTime = DateTime.Now;
-s
+
                 var time = curTime.ToString("HH:mm");
 
                 int rowAffected = 0;
                 var response = "";
                 var found = false;
                 var cnic = "";
-                var outletid = 0;
 
                 List<Party> appMenuParty = new List<Party>();
                 cmd2 = "select cnic from party where \"isDeleted\"::int = 0 AND cnic = '" + obj.cnic + "' AND (\"type\" = 'supplier' OR \"type\" = 'customer')";
@@ -85,8 +99,7 @@ s
                     {
                         if(obj.type=="outlet")
                         {
-                            outletid = "select outletid from party where \"type\"='outlet'"
-                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+outletid+")";
+                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
                         }
                         else
                         {
