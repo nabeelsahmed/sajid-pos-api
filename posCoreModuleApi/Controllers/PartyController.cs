@@ -63,7 +63,7 @@ namespace posCoreModuleApi.Controllers
                 DateTime curDate = DateTime.Today;
 
                 DateTime curTime = DateTime.Now;
-
+s
                 var time = curTime.ToString("HH:mm");
 
                 int rowAffected = 0;
@@ -83,7 +83,15 @@ namespace posCoreModuleApi.Controllers
                 {
                     if (cnic == "")
                     {
-                        cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
+                        if(obj.type=="outlet")
+                        {
+                            outletid = "select outletid from party where \"type\"='outlet'"
+                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+outletid+")";
+                        }
+                        else
+                        {
+                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                        }
                     }
                     else
                     {
@@ -102,14 +110,7 @@ namespace posCoreModuleApi.Controllers
                         rowAffected = con.Execute(cmd);
                     }
                 }
-                if(obj.partyType=="outlet")
-                {
-                    outletid = obj.outletid;
-                }
-                else
-                {
-                    outletid = 0;
-                }
+                
                 if (rowAffected > 0)
                 {
                     response = "Success";
@@ -125,15 +126,9 @@ namespace posCoreModuleApi.Controllers
                         response = "Server Issue";
                     }
                 }
-                if(outletid>0)
-                {
-                    return Ok(new { message = response, outletid });
-                }
-                else
-                {
-                    return Ok(new { message = response});
-
-                }
+                
+                return Ok(new { message = response});
+                
             }
             catch (Exception e)
             {
