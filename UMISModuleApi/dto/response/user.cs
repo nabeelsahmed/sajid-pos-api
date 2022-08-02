@@ -13,5 +13,7 @@ namespace UMISModuleAPI.Entities
         public string isPinCode { get; set; }
         public string pinCode { get; set; }
         public string spType { get; set; }
+        public int outletid { get; set; }
+
     }
 }
