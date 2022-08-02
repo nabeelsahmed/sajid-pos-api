@@ -26,14 +26,25 @@ namespace reportApi.Controllers
         }
         
         [HttpGet("getLedgerReport")]
-        public IActionResult getLedgerReport(int coaID, string fromDate, string toDate)
+        public IActionResult getLedgerReport(int coaID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.ledgerreport  where coaid = '" + coaID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.ledgerreport  where coaid = '" + coaID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<Ledger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<Ledger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                else
+                {
+                    cmd = "select * from public.ledgerreport  where outletid='"+outletid+"' and coaid = '" + coaID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<Ledger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                
             }
             catch (Exception e)
             {
@@ -42,14 +53,25 @@ namespace reportApi.Controllers
         }
 
         [HttpGet("getPartyLedgerReport")]
-        public IActionResult getPartyLedgerReport(int partyID, string fromDate, string toDate)
+        public IActionResult getPartyLedgerReport(int partyID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);    
+                }
+                else
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and outletid='"+outletid+"' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                
             }
             catch (Exception e)
             {
@@ -58,14 +80,25 @@ namespace reportApi.Controllers
         }
 
         [HttpGet("getPresentStock")]
-        public IActionResult getPresentStock(int partyID, string fromDate, string toDate)
+        public IActionResult getPresentStock(int partyID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);        
+                }
+                else
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and outletid='"+outletid+"' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                
             }
             catch (Exception e)
             {
@@ -74,14 +107,25 @@ namespace reportApi.Controllers
         }
         
         [HttpGet("getDailyCategorySale")]
-        public IActionResult getDailyCategorySale(int partyID, string fromDate, string toDate)
+        public IActionResult getDailyCategorySale(int partyID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);    
+                }
+                else
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and outletid='"+outletid+"' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                
             }
             catch (Exception e)
             {
@@ -90,14 +134,25 @@ namespace reportApi.Controllers
         }
         
         [HttpGet("getPeriodicSale")]
-        public IActionResult getPeriodicSale(int partyID, string fromDate, string toDate)
+        public IActionResult getPeriodicSale(int partyID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);    
+                }
+                else
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and outletid='"+outletid+"' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                
             }
             catch (Exception e)
             {
@@ -106,14 +161,24 @@ namespace reportApi.Controllers
         }
         
         [HttpGet("getPeriodicCategorySale")]
-        public IActionResult getPeriodicCategorySale(int partyID, string fromDate, string toDate)
+        public IActionResult getPeriodicCategorySale(int partyID, string fromDate, string toDate,int outletid)
         {
             try
             {
-                cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+                if (outletid==0)
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
 
-                var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
-                return Ok(appMenu);
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
+                else
+                {
+                    cmd = "select * from public.partyledgerview  where partyledgerview.partyid = '" + partyID + "' and outletid='"+outletid+"' and invoicedate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+
+                    var appMenu = dapperQuery.Qry<PartyLedger>(cmd, _dbCon);
+                    return Ok(appMenu);
+                }
             }
             catch (Exception e)
             {
