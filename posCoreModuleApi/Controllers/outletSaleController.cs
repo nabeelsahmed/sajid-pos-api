@@ -15,12 +15,12 @@ namespace posCoreModuleApi.Controllers
 {   
     [ApiController]
     [Route("[controller]")]
-    public class outletSaleController : ControllerBase
+    public class OutletSaleController : ControllerBase
     {
         private readonly IOptions<conStr> _dbCon;
         private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6;
 
-        public outletSaleController(IOptions<conStr> dbCon)
+        public OutletSaleController(IOptions<conStr> dbCon)
         {
             _dbCon = dbCon;
         }
