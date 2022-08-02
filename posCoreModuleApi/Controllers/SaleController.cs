@@ -69,12 +69,12 @@ namespace posCoreModuleApi.Controllers
                 if (obj.partyID == 0)
                 {
                     //In case of partyID is null
-                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.invoiceDate + "', '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\",\"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.invoiceDate + "', '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "', "+obj.outletid+",'" + curDate + "', " + obj.userID + ", B'0')";
                 }
                 else
                 {
                     //In case of partyID is not null
-                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"partyID\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.invoiceDate + "', '" + time + "', '" + obj.partyID + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"partyID\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\",\"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.invoiceDate + "', '" + time + "', '" + obj.partyID + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "',"+obj.outletid+",'" + curDate + "', " + obj.userID + ", B'0')";
                 }
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
@@ -200,12 +200,12 @@ namespace posCoreModuleApi.Controllers
                 if (obj.partyID == 0)
                 {
                     //In case of partyID is null
-                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"refInvoiceNo\", \"refInvoiceDate\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceDate + "', '" + time + "','" + obj.refInvoiceNo + "','" + obj.refInvoiceDate + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SR', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"refInvoiceNo\", \"refInvoiceDate\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\",\"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceDate + "', '" + time + "','" + obj.refInvoiceNo + "','" + obj.refInvoiceDate + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SR', '" + obj.description + "', '" + obj.branchID + "',"+obj.outletid+", '" + curDate + "', " + obj.userID + ", B'0')";
                 }
                 else
                 {
                     //In case of partyID is not null
-                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"partyID\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceDate + "', '" + time + "', '" + obj.partyID + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SR', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.invoice (\"invoiceDate\", \"invoicetime\", \"partyID\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\",\"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceDate + "', '" + time + "', '" + obj.partyID + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SR', '" + obj.description + "', '" + obj.branchID + "',"+obj.outletid+", '" + curDate + "', " + obj.userID + ", B'0')";
                 }
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))

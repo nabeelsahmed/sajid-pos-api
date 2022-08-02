@@ -9,6 +9,7 @@ namespace posCoreModuleApi.Entities
         public int invoiceNo { get; set; }
         public string invoiceDate { get; set; }
         public Nullable<int> partyID { get; set; }
+        public int outletid { get; set; }
         public int bankID { get; set; }
         public int refInvoiceNo { get; set; }
         public string refInvoiceDate { get; set; }

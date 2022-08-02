@@ -47,7 +47,7 @@ namespace posCoreModuleApi.Controllers
 
 
                 //In case of partyID is not null
-                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
+                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SO', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
                     
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
@@ -163,7 +163,7 @@ namespace posCoreModuleApi.Controllers
 
 
                 //In case of partyID is not null
-                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'S', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
+                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SRO', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
                     
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
