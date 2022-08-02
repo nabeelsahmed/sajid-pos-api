@@ -40,6 +40,21 @@ namespace posCoreModuleApi.Controllers
             }
         }
 
+        [HttpGet("getSaleParty")]
+        public IActionResult getSaleParty()
+        {
+            try
+            {
+                cmd = "SELECT * FROM view_saleParty order by \"partyID\" desc";
+                var appMenu = dapperQuery.Qry<Party>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
         [HttpGet("getAllParties")]
         public IActionResult getAllParties()
         {
