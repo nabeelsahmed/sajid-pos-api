@@ -25,6 +25,23 @@ namespace posCoreModuleApi.Controllers
         {
             _dbCon = dbCon;
         }
+        
+        [HttpGet("getProductInventory")]
+        public IActionResult getProductInventory(int productID)
+        {
+            try
+            {
+                cmd = "SELECT sum(pqty)-sum(sqty) as Qty FROM product_inventory('"+productID+"')";
+
+                var appMenu = dapperQuery.Qry<productInventory>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
 
         [HttpGet("getSaleReturn")]
         public IActionResult getSaleReturn(int invoiceNo)
