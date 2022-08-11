@@ -27,5 +27,9 @@ namespace posCoreModuleApi.Entities
         public int schemeLimit { get; set; }
         public string productName { get; set; }
         public string pctCode { get; set; }
+        
+        public float laborCost { get; set; }
+        public int NoOfBoxes { get; set; }
+        public float freightCharges { get; set; }
     }
 }

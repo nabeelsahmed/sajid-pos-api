@@ -226,11 +226,11 @@ namespace posCoreModuleApi.Controllers
                     {
                         rowAffected2 = con.Execute(cmd4);
                     }
-                    cmd5 = "insert into public.\"productPrice\" (\"productID\", \"costPrice\", \"salePrice\", \"retailPrice\", \"wholeSalePrice\", \"gst\", \"et\", \"packing\", \"packingSalePrice\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + prodID + ", " + obj.costPrice + ", " + obj.salePrice + ", " + obj.retailPrice + ", " + obj.wholeSalePrice + ", " + obj.gst + ", " + obj.et + ", " + obj.packingQty + ", " + obj.packingSalePrice + ", '" + curDate + "', " + obj.userID + ", B'0')";
-                    using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
-                    {
-                        rowAffected3 = con.Execute(cmd5);
-                    }
+                    // cmd5 = "insert into public.\"productPrice\" (\"productID\", \"costPrice\", \"salePrice\", \"retailPrice\", \"wholeSalePrice\", \"gst\", \"et\", \"packing\", \"packingSalePrice\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + prodID + ", " + obj.costPrice + ", " + obj.salePrice + ", " + obj.retailPrice + ", " + obj.wholeSalePrice + ", " + obj.gst + ", " + obj.et + ", " + obj.packingQty + ", " + obj.packingSalePrice + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                    // using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                    // {
+                    //     rowAffected3 = con.Execute(cmd5);
+                    // }
 
                     if (obj.applicationEDocPath != null && obj.applicationEDocPath != "")
                     {
@@ -241,8 +241,9 @@ namespace posCoreModuleApi.Controllers
                             obj.applicationEdocExtenstion);
                     }
                 }
-
-                if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
+                
+                // if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
+                if (rowAffected > 0 && rowAffected2 > 0)
                 {
                     response = "Success";
                 }
@@ -294,11 +295,11 @@ namespace posCoreModuleApi.Controllers
                         rowAffected2 = con.Execute(cmd3);
                     }
 
-                    cmd4 = "update public.\"productPrice\" set \"costPrice\" = '" + obj.costPrice + "', \"salePrice\" = '" + obj.salePrice + "', \"retailPrice\" = '" + obj.retailPrice + "', \"wholeSalePrice\" = '" + obj.wholeSalePrice + "', \"gst\" = '" + obj.gst + "', \"et\" = '" + obj.et + "', \"packing\" = '" + obj.packingQty + "', \"packingSalePrice\" = '" + obj.packingSalePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + obj.pPriceID + ";";
-                    using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
-                    {
-                        rowAffected3 = con.Execute(cmd4);
-                    }
+                    // cmd4 = "update public.\"productPrice\" set \"costPrice\" = '" + obj.costPrice + "', \"salePrice\" = '" + obj.salePrice + "', \"retailPrice\" = '" + obj.retailPrice + "', \"wholeSalePrice\" = '" + obj.wholeSalePrice + "', \"gst\" = '" + obj.gst + "', \"et\" = '" + obj.et + "', \"packing\" = '" + obj.packingQty + "', \"packingSalePrice\" = '" + obj.packingSalePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + obj.pPriceID + ";";
+                    // using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                    // {
+                    //     rowAffected3 = con.Execute(cmd4);
+                    // }
                 }
 
                 if (obj.applicationEDocPath != null && obj.applicationEDocPath != "")
@@ -309,7 +310,8 @@ namespace posCoreModuleApi.Controllers
                         obj.applicationEDocPath,
                         obj.applicationEdocExtenstion);
                 }
-                if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
+                // if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
+                if (rowAffected > 0 && rowAffected2 > 0)
                 {
                     response = "Success";
                 }
@@ -344,14 +346,15 @@ namespace posCoreModuleApi.Controllers
                     rowAffected = con.Execute(cmd);
                 }
 
-                cmd2 = "update public.\"productPrice\" set \"costPrice\" = '" + obj.costPrice + "', \"salePrice\" = '" + obj.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+                // cmd2 = "update public.\"productPrice\" set \"costPrice\" = '" + obj.costPrice + "', \"salePrice\" = '" + obj.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
 
-                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
-                {
-                    rowAffected2 = con.Execute(cmd2);
-                }
+                // using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                // {
+                //     rowAffected2 = con.Execute(cmd2);
+                // }
 
-                if (rowAffected > 0 && rowAffected2 > 0)
+                // if (rowAffected > 0 && rowAffected2 > 0)
+                if (rowAffected > 0)
                 {
                     response = "Success";
                 }

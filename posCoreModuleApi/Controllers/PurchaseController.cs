@@ -19,7 +19,7 @@ namespace posCoreModuleApi.Controllers
     public class PurchaseController : ControllerBase
     {
         private readonly IOptions<conStr> _dbCon;
-        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6;
+        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6,cmd7;
 
         public PurchaseController(IOptions<conStr> dbCon)
         {
@@ -60,6 +60,7 @@ namespace posCoreModuleApi.Controllers
                 int rowAffected3 = 0;
                 int rowAffected4 = 0;
                 int rowAffected5 = 0;
+                int rowAffected6 = 0;
                 var response = "";
                 List<Invoice> appMenuInvoice = new List<Invoice>();
                 // List<Invoice> appMenuBarcode = new List<Invoice>();
@@ -92,6 +93,7 @@ namespace posCoreModuleApi.Controllers
 
                     var invoiceNo = appMenuInvoice[0].invoiceNo;
 
+
                     //convert string to json data to insert in invoice detail table
                     var invObject = JsonConvert.DeserializeObject<List<InvoiceDetailCreation>>(obj.json);
 
@@ -99,11 +101,17 @@ namespace posCoreModuleApi.Controllers
                     //saving json data one by one in invoice detail table
                     foreach (var item in invObject)
                     {
-                        cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"locationID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.locationID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', '" + item.qty * item.salePrice + "', 0, '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"locationID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\",\"laborcost\",\"noofboxes\",\"freightcharges\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.locationID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', '" + item.qty * item.salePrice + "', 0, '" + item.discount + "', '" + item.productName + "', '1',"+item.laborCost+","+item.NoOfBoxes+","+item.freightCharges+", '" + curDate + "', " + obj.userID + ", B'0')";
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected2 = con.Execute(cmd3);
+                        }
+
+                        cmd7 = "insert into public.\"productPrice\" (\"productID\",\"purchaseid\", \"costPrice\", \"salePrice\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ","+invoiceNo+"," + item.costPrice + ", " + item.salePrice + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected6 = con.Execute(cmd7);
                         }
 
                         total += item.salePrice;
