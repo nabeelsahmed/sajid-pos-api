@@ -19,7 +19,7 @@ namespace posCoreModuleApi.Controllers
     public class SaleController : ControllerBase
     {
         private readonly IOptions<conStr> _dbCon;
-        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6;
+        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7;
 
         public SaleController(IOptions<conStr> dbCon)
         {
@@ -43,6 +43,38 @@ namespace posCoreModuleApi.Controllers
 
         }
 
+        [HttpGet("getSale")]
+        public IActionResult getSale(int outletID)
+        {
+            try
+            {
+                cmd = "select * from invoice where outletid = " + outletID + " AND \"invoiceType\" = 'S' AND \"isDeleted\"::int = 0 order by \"invoiceNo\" Desc";
+
+                var appMenu = dapperQuery.Qry<Sale>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+        
+        [HttpGet("getSaleDetail")]
+        public IActionResult getSaleDetail(int invoiceNo)
+        {
+            try
+            {
+                cmd = "select * from \"invoiceDetail\" where \"invoiceNo\" = " + invoiceNo + " AND \"isDeleted\"::int = 0 AND \"productID\" is not NULL order by \"invoiceDetailID\" Asc";
+
+                var appMenu = dapperQuery.Qry<SaleDetail>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+        
         [HttpGet("getSaleReturn")]
         public IActionResult getSaleReturn(int invoiceNo)
         {
@@ -77,10 +109,13 @@ namespace posCoreModuleApi.Controllers
                 int rowAffected3 = 0;
                 int rowAffected4 = 0;
                 int rowAffected5 = 0;
+                int rowAffected6 = 0;
+
                 var response = "";
                 List<Invoice> appMenuInvoice = new List<Invoice>();
                 // List<Invoice> appMenuBarcode = new List<Invoice>();
                 var total = 0.0;
+                var boxPrice = 0;
 
 
                 if (obj.partyID == 0)
@@ -116,14 +151,22 @@ namespace posCoreModuleApi.Controllers
                     //saving json data one by one in invoice detail table
                     foreach (var item in invObject)
                     {
-                        cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', 0, '" + item.qty * item.salePrice + "', '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"qty\", \"costPrice\", \"salePrice\", \"boxprice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', '" + item.boxprice + "', 0, '" + ((item.qty * item.salePrice) + (item.boxprice)) + "', '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected2 = con.Execute(cmd3);
                         }
 
-                        total += item.salePrice;
+                        var curQty = (item.availableqty - item.qty);
+                        cmd7 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + item.pPriceID + ";";
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected2 = con.Execute(cmd7);
+                        }
+
+                        total +=((item.qty * item.salePrice) + item.boxprice);
+                        // boxPrice = item.boxPrice
                     }
 
                     total -= obj.discount;
@@ -154,11 +197,13 @@ namespace posCoreModuleApi.Controllers
                         }
                     }
 
+                    var change = 0.0;
                     //in case of cash payment
                     if (obj.cashReceived > 0)
                     {
+                        change = total - obj.cashReceived;
 
-                        cmd4 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + obj.cashReceived + "', 0, '2', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd4 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + (obj.cashReceived + change) + "', 0, '2', '" + curDate + "', " + obj.userID + ", B'0')";
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {

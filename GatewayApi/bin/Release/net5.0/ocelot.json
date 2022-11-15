@@ -5,7 +5,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7001"
+                "Port": "7051"
             }],
             "UpstreamPathTemplate": "/auth-api/auth"
         },
@@ -14,7 +14,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7001"
+                "Port": "7051"
             }],
             "UpstreamPathTemplate": "/user-api/test"
         },
@@ -23,7 +23,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7001"
+                "Port": "7051"
             }],
             "UpstreamPathTemplate": "/auth-api/logo"
         },
@@ -32,7 +32,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7001"
+                "Port": "7051"
             }],
             "UpstreamPathTemplate": "/user-api/{catchAll}",
             "AuthenticationOptions":  {
@@ -45,7 +45,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7002"
+                "Port": "7052"
             }],
             "UpstreamPathTemplate": "/core-api/{catchAll}",
             "AuthenticationOptions":  {
@@ -58,7 +58,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7003"
+                "Port": "7053"
             }],
             "UpstreamPathTemplate": "/bachat-online-api/{catchAll}"
         },
@@ -67,7 +67,7 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7004"
+                "Port": "7054"
             }],
             "UpstreamPathTemplate": "/fmis-api/{catchAll}",
             "AuthenticationOptions":  {
@@ -80,9 +80,22 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "localhost",
-                "Port": "7005"
+                "Port": "7055"
             }],
             "UpstreamPathTemplate": "/cmis-api/{catchAll}",
+            "AuthenticationOptions":  {
+                "AuthenticationProviderKey": "MyOwnKey",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/{catchAll}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "localhost",
+                "Port": "7056"
+            }],
+            "UpstreamPathTemplate": "/report-api/{catchAll}",
             "AuthenticationOptions":  {
                 "AuthenticationProviderKey": "MyOwnKey",
                 "AllowedScopes": []
@@ -90,6 +103,6 @@
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "https://localhost:7000/"
+        "BaseUrl": "https://localhost:7050/"
     }
 }

@@ -41,21 +41,37 @@ namespace posCoreModuleApi.Controllers
 
         }
 
-        // [HttpGet("getTopFKProducts")]
-        // public IActionResult getTopFKProducts()
-        // {
-        //     try
-        //     {
-        //         cmd = "SELECT * FROM view_product order by \"productID\" desc offset 2500 limit 2500";
-        //         var appMenu = dapperQuery.Qry<Product>(cmd, _dbCon);
-        //         return Ok(appMenu);
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         return Ok(e);
-        //     }
+        [HttpGet("getAllProduct")]
+        public IActionResult getAllProduct()
+        {
+            try
+            {
+                cmd = "SELECT * FROM \"view_allProduct\" order by \"productID\" desc";
+                var appMenu = dapperQuery.Qry<Product>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
 
-        // }
+        }
+
+        [HttpGet("getAvailProduct")]
+        public IActionResult getAvailProduct(int outletID)
+        {
+            try
+            {
+                cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + ";";
+                var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
 
         // [HttpGet("getTopTKProducts")]
         // public IActionResult getTopTKProducts()
@@ -173,7 +189,7 @@ namespace posCoreModuleApi.Controllers
                 // obj.applicationEDoc
                 if (productName == "")
                 {
-                    cmd = "insert into public.product (\"categoryID\", \"uomID\", \"brandID\", \"productName\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.categoryID + "', " + obj.uomID + ", " + obj.brandID + ", '" + obj.productName + "', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.product (\"uomID\", \"productName\", \"categoryID\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + obj.uomID + ", '" + obj.productName + "', '2', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + curDate + "', " + obj.userID + ", B'0')";
                 }
                 else
                 {
@@ -279,7 +295,11 @@ namespace posCoreModuleApi.Controllers
                 int rowAffected3 = 0;
                 var response = "";
 
-                cmd = "update product set \"categoryID\" = '" + obj.categoryID + "', \"uomID\" = " + obj.uomID + ", \"locationID\" = " + obj.locationID + ", \"brandID\" = " + obj.brandID + ", \"productName\" = '" + obj.productName + "', \"productNameUrdu\" = '" + obj.productNameUrdu + "', \"ROL\" = '" + obj.reOrderLevel + "', \"maxLimit\" = '" + obj.maxLimit + "', \"quickSale\" = '" + obj.quickSale + "', \"pctCode\" = '" + obj.pctCode + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+            if(obj.applicationEDoc == ""){
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+            }else{
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", applicationedoc = '" + obj.applicationEDoc + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+            }
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {

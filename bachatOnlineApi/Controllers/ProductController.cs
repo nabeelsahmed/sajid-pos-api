@@ -33,6 +33,22 @@ namespace bachatOnlineApi.Controllers
             return Ok("OK");
         }
 
+        [HttpGet("getAvailProduct")]
+        public IActionResult getAvailProduct(int outletID)
+        {
+            try
+            {
+                cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + ";";
+                var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getOnlineProduct")]
         public IActionResult getOnlineProduct()
         {

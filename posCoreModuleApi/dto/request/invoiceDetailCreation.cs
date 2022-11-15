@@ -10,10 +10,11 @@ namespace posCoreModuleApi.Entities
         public int invoiceNo { get; set; }
         public int locationID { get; set; }
         public int productID { get; set; }
-        public int qty { get; set; }
+        public float qty { get; set; }
         public Nullable<int> schemeQty { get; set; }
         public float costPrice { get; set; }
         public float salePrice { get; set; }
+        public float boxprice { get; set; }
         public float discount { get; set; }
         public float gst { get; set; }
         public float et { get; set; }
@@ -27,7 +28,11 @@ namespace posCoreModuleApi.Entities
         public int schemeLimit { get; set; }
         public string productName { get; set; }
         public string pctCode { get; set; }
-        
+
+        public float availableqty { get; set; }
+        public int pPriceID { get; set; }
+        public int outletid { get; set; }
+
         public float laborCost { get; set; }
         public int NoOfBoxes { get; set; }
         public float freightCharges { get; set; }
