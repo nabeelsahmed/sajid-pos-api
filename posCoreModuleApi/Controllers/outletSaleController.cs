@@ -18,7 +18,7 @@ namespace posCoreModuleApi.Controllers
     public class OutletSaleController : ControllerBase
     {
         private readonly IOptions<conStr> _dbCon;
-        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6;
+        private string cmd, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8;
 
         public OutletSaleController(IOptions<conStr> dbCon)
         {
@@ -26,7 +26,7 @@ namespace posCoreModuleApi.Controllers
         }
 
         [HttpPost("saveOutletSales")]
-        public IActionResult saveOutletSales(outletSaleCreation obj)
+        public IActionResult saveOutletSales(OutletSaleCreation obj)
         {
             try
             {
@@ -40,14 +40,16 @@ namespace posCoreModuleApi.Controllers
                 int rowAffected3 = 0;
                 int rowAffected4 = 0;
                 int rowAffected5 = 0;
+                int rowAffected6 = 0;
+                int rowAffected7 = 0;
                 var response = "";
                 List<Invoice> appMenuInvoice = new List<Invoice>();
                 // List<Invoice> appMenuBarcode = new List<Invoice>();
-                var total = 0.0;
+                var totalAmount = 0.0;
 
 
                 //In case of partyID is not null
-                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SO', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
+                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'SO', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0', " + obj.outletid + ")";
                     
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
@@ -78,10 +80,26 @@ namespace posCoreModuleApi.Controllers
                             rowAffected2 = con.Execute(cmd3);
                         }
 
-                        total += item.salePrice;
+                        // var costPrice = 0.0;
+                        // var salePrice = 0.0;
+                        // costPrice = (item.costPrice + item.laborCost + item.freightCharges) /  item.qty;
+                        // salePrice = (item.salePrice + item.laborCost + item.freightCharges) /  item.qty;
+                        cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected6 = con.Execute(cmd7);
+                        }
+
+                        var curQty = (item.availableqty - item.qty);
+                        cmd8 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + item.pPriceID + ";";
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected7 = con.Execute(cmd8);
+                        }
+                        totalAmount += (item.salePrice*item.qty);
                     }
 
-                    total -= obj.discount;
+                    totalAmount -= obj.discount;
 
                     //in case of giving discount to over all bill
                     if (obj.discount > 0)
@@ -97,11 +115,11 @@ namespace posCoreModuleApi.Controllers
                     }
 
                     //in case of loan (udhaar) payment where partyID is not null
-                    if (obj.partyID > 0 && (total - obj.cashReceived) > 0)
+                    if (obj.partyID > 0 && (totalAmount - obj.cashReceived) > 0)
                     {
-                        total -= obj.cashReceived;
+                        totalAmount -= obj.cashReceived;
 
-                        cmd5 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + total + "', 0, '6', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd5 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + totalAmount + "', 0, '6', '" + curDate + "', " + obj.userID + ", B'0')";
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
@@ -112,8 +130,127 @@ namespace posCoreModuleApi.Controllers
                     //in case of cash payment
                     if (obj.cashReceived > 0)
                     {
+                        var change = obj.cashReceived - totalAmount;
 
-                        cmd4 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + obj.cashReceived + "', 0, '2', '" + curDate + "', " + obj.userID + ", B'0')";
+                        cmd4 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + (obj.cashReceived - change) + "', 0, '2', '" + curDate + "', " + obj.userID + ", B'0')";
+
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected3 = con.Execute(cmd4);
+                        }
+                    }
+
+                }
+
+                if (rowAffected > 0 && rowAffected2 > 0)
+                {
+                    saveOutletPurchase(obj);
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Server Issue";
+                }
+
+                return Ok(new { message = response, invoiceNo = appMenuInvoice[0].invoiceNo });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("saveOutletPurchase")]
+        public IActionResult saveOutletPurchase(OutletSaleCreation obj)
+        {
+            try
+            {
+                DateTime curDate = DateTime.Today;
+                DateTime curTime = DateTime.Now;
+
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                int rowAffected2 = 0;
+                int rowAffected3 = 0;
+                int rowAffected4 = 0;
+                int rowAffected5 = 0;
+                var response = "";
+                List<Invoice> appMenuInvoice = new List<Invoice>();
+                // List<Invoice> appMenuBarcode = new List<Invoice>();
+                var total = 0.0;
+
+
+                //In case of partyID is not null
+                cmd = "insert into public.invoice (\"invoiceDate\",\"partyID\", \"invoicetime\", \"cashReceived\", \"discount\", \"change\", \"invoiceType\", \"description\", \"branchID\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.invoiceDate + "',"+obj.partyID+", '" + time + "', " + obj.cashReceived + ", " + obj.discount + ", '" + obj.change + "', 'PO', '" + obj.description + "', '" + obj.branchID + "', '" + curDate + "', " + obj.userID + ", B'0', " + obj.outletid + ")";
+                    
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                //confirmation of data saved in invoice
+                if (rowAffected > 0)
+                {
+
+                    //getting last saved invoice no
+                    cmd2 = "SELECT \"invoiceNo\" FROM public.invoice order by \"invoiceNo\" desc limit 1";
+                    appMenuInvoice = (List<Invoice>)dapperQuery.QryResult<Invoice>(cmd2, _dbCon);
+
+                    var invoiceNo = appMenuInvoice[0].invoiceNo;
+
+                    //convert string to json data to insert in invoice detail table
+                    var invObject = JsonConvert.DeserializeObject<List<InvoiceDetailCreation>>(obj.json);
+
+
+                    //saving json data one by one in invoice detail table
+                    foreach (var item in invObject)
+                    {
+                        cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', '" + item.qty * item.salePrice + "', 0, '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
+
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected2 = con.Execute(cmd3);
+                        }
+
+                        total += (item.salePrice*item.qty);
+                    }
+
+                    total -= obj.discount;
+
+                    //in case of giving discount to over all bill
+                    if (obj.discount > 0)
+                    {
+
+                        cmd6 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', 0, '" + obj.discount + "', '3', '" + curDate + "', " + obj.userID + ", B'0')";
+
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected5 = con.Execute(cmd6);
+                        }
+
+                    }
+
+                    //in case of loan (udhaar) payment where partyID is not null
+                    if (obj.partyID > 0 && (total - obj.cashReceived) > 0)
+                    {
+                        total -= obj.cashReceived;
+
+                        cmd5 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', 0, '" + total + "', '6', '" + curDate + "', " + obj.userID + ", B'0')";
+
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected4 = con.Execute(cmd5);
+                        }
+                    }
+
+                    //in case of cash payment
+                    if (obj.cashReceived > 0)
+                    {
+                        var change = obj.cashReceived - total;
+
+                        cmd4 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"debit\", \"credit\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', 0, '" + (obj.cashReceived - change) + "', '2', '" + curDate + "', " + obj.userID + ", B'0')";
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
@@ -132,7 +269,7 @@ namespace posCoreModuleApi.Controllers
                     response = "Server Issue";
                 }
 
-                return Ok(new { message = response, invoiceNo = appMenuInvoice[0].invoiceNo });
+                return Ok(new { message = response });
             }
             catch (Exception e)
             {
@@ -141,8 +278,9 @@ namespace posCoreModuleApi.Controllers
 
         }
 
+
         [HttpPost("saveOutletSalesReturn")]
-        public IActionResult saveOutletSalesReturn(outletSaleCreation obj)
+        public IActionResult saveOutletSalesReturn(OutletSaleCreation obj)
         {
             try
             {

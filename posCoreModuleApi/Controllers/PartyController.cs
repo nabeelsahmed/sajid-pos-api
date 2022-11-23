@@ -75,7 +75,7 @@ namespace posCoreModuleApi.Controllers
         {
             try
             {
-                cmd = "select \"partyID\", \"partyName\", outletid, \"type\" from party  where \"type\" = 'outlet'";
+                cmd = "select \"partyID\", \"partyName\", outletid, \"type\" from party  where \"type\" = 'outlet' AND \"isDeleted\"::int = 0";
                 var appMenu = dapperQuery.Qry<partyOutlet>(cmd, _dbCon);
                 return Ok(appMenu);
             }
@@ -114,11 +114,11 @@ namespace posCoreModuleApi.Controllers
                     {
                         if(obj.type=="outlet")
                         {
-                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
+                            cmd = "insert into public.\"party\" (\"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\",\"outletid\") values ('" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0',"+obj.outletid+")";
                         }
                         else
                         {
-                            cmd = "insert into public.\"party\" (\"rootID\", \"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.rootID + "', '" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                            cmd = "insert into public.\"party\" (\"cityID\", \"partyName\", \"partyNameUrdu\", \"address\", \"addressUrdu\", \"phone\", \"mobile\", \"type\", \"description\", \"cnic\", \"focalperson\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + obj.cityID + "', '" + obj.partyName + "', '" + obj.partyNameUrdu + "', '" + obj.address + "', '" + obj.addressUrdu + "', '" + obj.phone + "', '" + obj.mobile + "', '" + obj.type + "', '" + obj.description + "', '" + obj.cnic + "', '" + obj.focalPerson + "', '" + curDate + "', " + obj.userID + ", B'0')";
                         }
                     }
                     else
@@ -128,7 +128,7 @@ namespace posCoreModuleApi.Controllers
                 }
                 else
                 {
-                    cmd = "update public.\"party\" set \"rootID\" = '" + obj.rootID + "', \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"phone\" = '" + obj.phone + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"focalperson\" = '" + obj.focalPerson + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + ", \"outletid\"="+obj.outletid+" where \"partyID\" = " + obj.partyID + ";";
+                    cmd = "update public.\"party\" set \"cityID\" = '" + obj.cityID + "', \"partyName\" = '" + obj.partyName + "', \"partyNameUrdu\" = '" + obj.partyNameUrdu + "', \"address\" = '" + obj.address + "', \"addressUrdu\" = '" + obj.addressUrdu + "', \"phone\" = '" + obj.phone + "', \"mobile\" = '" + obj.mobile + "', \"type\" = '" + obj.type + "', \"description\" = '" + obj.description + "', \"cnic\" = '" + obj.cnic + "', \"focalperson\" = '" + obj.focalPerson + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + ", \"outletid\"="+obj.outletid+" where \"partyID\" = " + obj.partyID + ";";
                 }
 
                 if (found == false)

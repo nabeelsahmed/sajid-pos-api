@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace posCoreModuleApi.Entities
 {
-    public class outletSaleCreation
+    public class OutletSaleCreation
     {
         public int invoiceNo { get; set; }
         public string invoiceDate { get; set; }
