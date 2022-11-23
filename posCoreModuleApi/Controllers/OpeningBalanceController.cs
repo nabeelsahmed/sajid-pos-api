@@ -20,7 +20,7 @@ namespace posCoreModuleApi.Controllers
     {
         private readonly IOptions<conStr> _dbCon;
         private string cmd, cmd2, cmd3;
-
+    
         public OpeningBalanceController(IOptions<conStr> dbCon)
         {
             _dbCon = dbCon;
