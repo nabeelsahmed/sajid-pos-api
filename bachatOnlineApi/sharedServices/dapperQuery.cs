@@ -20,7 +20,8 @@ namespace bachatOnlineModuleApi.Services
     {
         public static IEnumerable<T> Qry<T>(string sql, IOptions<conStr> conStr)
         {
-            using (MySqlConnection con = new MySqlConnection(conStr.Value.dbCon))
+            // using (MySqlConnection con = new MySqlConnection(conStr.Value.dbCon))
+            using (NpgsqlConnection con = new NpgsqlConnection(conStr.Value.dbCon))
             {
                 return con.Query<T>(sql);
             }

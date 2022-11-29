@@ -8,7 +8,6 @@ namespace bachatOnlineModuleApi.Entities
     {
         public int productID { get; set; }
         public string productName { get; set; }
-        public float salePrice { get; set; }
         public string applicationedoc { get; set; }
         public string categoryName { get; set; }
         public int invoiceNo { get; set; }

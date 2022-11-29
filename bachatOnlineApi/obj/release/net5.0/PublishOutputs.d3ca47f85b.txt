@@ -1,0 +1,17 @@
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\bachatOnlineApi.exe
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\appsettings.Development.json
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\appsettings.json
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\bachatOnlineApi.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\bachatOnlineApi.deps.json
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\bachatOnlineApi.runtimeconfig.json
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\bachatOnlineApi.pdb
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Dapper.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Microsoft.Extensions.DependencyInjection.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Microsoft.OpenApi.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\MySqlConnector.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Newtonsoft.Json.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Npgsql.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Swashbuckle.AspNetCore.Swagger.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\projects\sajidProject\sajid-pos-api\bachatonlineapi\bin\release\net5.0\publish\System.Runtime.CompilerServices.Unsafe.dll

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\sajid-pos\\sajid-pos-api\\bachatOnlineApi\\bachatOnlineApi.csproj": {}
+    "E:\\projects\\sajidProject\\sajid-pos-api\\bachatonlineapi\\bachatOnlineApi.csproj": {}
   },
   "projects": {
-    "E:\\sajid-pos\\sajid-pos-api\\bachatOnlineApi\\bachatOnlineApi.csproj": {
+    "E:\\projects\\sajidProject\\sajid-pos-api\\bachatonlineapi\\bachatOnlineApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\sajid-pos\\sajid-pos-api\\bachatOnlineApi\\bachatOnlineApi.csproj",
+        "projectUniqueName": "E:\\projects\\sajidProject\\sajid-pos-api\\bachatonlineapi\\bachatOnlineApi.csproj",
         "projectName": "bachatOnlineApi",
-        "projectPath": "E:\\sajid-pos\\sajid-pos-api\\bachatOnlineApi\\bachatOnlineApi.csproj",
-        "packagesPath": "C:\\Users\\CCS LAPTOP HYD\\.nuget\\packages\\",
-        "outputPath": "E:\\sajid-pos\\sajid-pos-api\\bachatOnlineApi\\obj\\",
+        "projectPath": "E:\\projects\\sajidProject\\sajid-pos-api\\bachatonlineapi\\bachatOnlineApi.csproj",
+        "packagesPath": "C:\\Users\\sys\\.nuget\\packages\\",
+        "outputPath": "E:\\projects\\sajidProject\\sajid-pos-api\\bachatonlineapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CCS LAPTOP HYD\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\sys\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

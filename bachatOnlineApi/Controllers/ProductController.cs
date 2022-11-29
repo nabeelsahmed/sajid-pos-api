@@ -67,14 +67,14 @@ namespace bachatOnlineApi.Controllers
         }
 
         [HttpGet("getCheckQty")]
-        public IActionResult getCheckQty(int invoiceDetailID, int qty)
+        public IActionResult getCheckQty(int pPriceID, int qty)
         {
             try
             {
-                cmd = "SELECT \"invoiceDetailID\", qty FROM \"invoiceDetail\" where \"invoiceDetailID\" = '" + invoiceDetailID + "' AND \"isDeleted\"::int = 0";
+                cmd = "SELECT availableqty FROM \"productPrice\" where \"pPriceID\" = '" + pPriceID + "' AND \"isDeleted\"::int = 0";
                 var appMenu = (List<Product>)dapperQuery.QryResult<Product>(cmd, _dbCon);
 
-                var availQty = appMenu[0].qty - qty;
+                var availQty = appMenu[0].availableqty - qty;
 
                 if (availQty >= 0)
                 {
@@ -82,7 +82,7 @@ namespace bachatOnlineApi.Controllers
                 }
                 else
                 {
-                    return Ok(new { msg = false, qty = appMenu[0].qty });
+                    return Ok(new { msg = false, qty = appMenu[0].availableqty });
                 }
                 // return Ok(appMenu);
             }
@@ -174,12 +174,12 @@ namespace bachatOnlineApi.Controllers
                             rowAffected2 = con.Execute(cmd3);
                         }
 
-                        cmd4 = "SELECT \"invoiceDetailID\", qty FROM \"invoiceDetail\" where \"invoiceDetailID\" = '" + item.invoiceDetailID + "' AND \"isDeleted\"::int = 0";
-                        var appMenu = (List<Product>)dapperQuery.QryResult<Product>(cmd4, _dbCon);
+                        // cmd4 = "SELECT \"invoiceDetailID\", qty FROM \"invoiceDetail\" where \"invoiceDetailID\" = '" + item.invoiceDetailID + "' AND \"isDeleted\"::int = 0";
+                        // var appMenu = (List<Product>)dapperQuery.QryResult<Product>(cmd4, _dbCon);
 
-                        var availQty = appMenu[0].qty - item.qty;
+                        var availQty = (item.availQty - item.qty);
 
-                        cmd5 = "update public.\"invoiceDetail\" set qty = " + availQty + " where \"invoiceDetailID\" = " + item.invoiceDetailID + ";";
+                        cmd5 = "update public.\"productPrice\" set availableqty = " + availQty + " where \"pPriceID\" = " + item.pPriceID + ";";
 
 
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
