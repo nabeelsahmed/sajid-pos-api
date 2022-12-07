@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using UMISModuleAPI.Configuration;
 using UMISModuleApi.Entities;
+using UMISModuleAPI.Entities;
 using UMISModuleAPI.Services;
 using Dapper;
 using System.Data;
@@ -26,7 +27,90 @@ namespace UMISModuleApi.Controllers
             _userService = userService;
             _dbCon = dbCon;
         }
+        
+        [HttpGet("getApplicationMenu")]
+        public IActionResult getApplicationMenu()
+        {
+            try
+            {
+                cmd = "SELECT \"applicationModuleID\",\"applicationModuleTitle\" from \"application_modules\" where \"isDeleted\" = 0";
+                var appMenu = dapperQuery.Qry<ApplicationModule>(cmd, _dbCon);
 
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpGet("getMenuRoleByModuleId")]
+        public IActionResult getMenurole(int applicationModuleID)
+        {
+            try
+            {
+                if(applicationModuleID == 0){
+                    cmd = "SELECT * from \"view_role_detail\"";
+                }else{
+                    cmd = "SELECT * from \"view_role_detail\" where \"applicationModuleId\"= " + applicationModuleID + " ";
+                }
+                var appMenu = dapperQuery.Qry<Menu>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch(Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+        [HttpGet("getMenu")]
+        public IActionResult getMenu()
+        {
+            try
+            {
+                cmd = "SELECT * from \"view_allMenu\"";
+                
+                var appMenu = dapperQuery.Qry<Menu>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch(Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+        [HttpGet("getMenuList")]
+        public IActionResult getMenuList()
+        {
+            try
+            {
+                cmd = "SELECT \"menuId\",\"menuTitle\" from view_menu";
+                var appMenu = dapperQuery.Qry<Menu>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch(Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+        [HttpGet("getRoleDetail")]
+        public IActionResult getRoleDetail(int roleID)
+        {
+            try
+            {
+                cmd = "select j as json from \"fun_roleDetail\"(" + roleID + ")";
+                var appMenu = dapperQuery.Qry<JsonList>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
 
         [HttpPost("saveRole")]
         public IActionResult saveRole(RoleCreation obj)
