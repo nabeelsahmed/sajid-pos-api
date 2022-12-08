@@ -59,13 +59,21 @@ namespace UMISModuleAPI.Controllers
 
         }
 
-        [HttpGet("getUsers")]
-        public IActionResult getUsers()
+        [HttpGet("getUser")]
+        public IActionResult getUser(int userID)
         {
             try
-            {
-                cmd = "SELECT \"userID\" FROM users WHERE \"isDeleted\" = 0 And \"userID\" = '" + userID + "' and pincode = '" + pin + "';";
-                var appMenu = dapperQuery.Qry<User>(cmd, _dbCon);
+            {   
+                if (userID == 0)
+                {
+                    cmd = "SELECT * FROM \"view_allUser\"";
+                }
+                else
+                {
+                    cmd = "SELECT * FROM \"view_allUser\" WHERE \"userID\" = '" + userID + "';";    
+                }
+                
+                var appMenu = dapperQuery.Qry<UserDetail>(cmd, _dbCon);
 
                 return Ok(appMenu);
             }
