@@ -439,6 +439,54 @@ namespace UMISModuleAPI.Controllers
 
         }
 
+        [HttpPost("deleteUser")]
+        public IActionResult deleteUser(UserCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+
+
+                List<UserCreation> appMenuAddressID = new List<UserCreation>();
+                cmd3 = "select \"userAddressID\" from user_address ORDER BY \"userAddressID\" DESC LIMIT 1";
+                appMenuAddressID = (List<UserCreation>)dapperQuery.Qry<UserCreation>(cmd3, _dbCon);
+                
+                cmd2 = "UPDATE public.\"users\" SET \"isDeleted\"=1 where \"userID\"="+obj.userID+"";
+            
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd2);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    
+                    response = "Try again";
+                    
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpPost("updatePassword")]
         public IActionResult updatePassword(UserCreation obj)
         {
