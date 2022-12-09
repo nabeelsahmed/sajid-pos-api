@@ -84,14 +84,30 @@ namespace posCoreModuleApi.Controllers
                         // var salePrice = 0.0;
                         // costPrice = (item.costPrice + item.laborCost + item.freightCharges) /  item.qty;
                         // salePrice = (item.salePrice + item.laborCost + item.freightCharges) /  item.qty;
-                        cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
+
+                        List<InvoiceDetailCreation> appMenuProdPrice = new List<InvoiceDetailCreation>();
+
+                        //getting available qty for saved products
+                        cmd2 = "select availableqty from \"productPrice\" where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
+                        appMenuProdPrice = (List<InvoiceDetailCreation>)dapperQuery.QryResult<InvoiceDetailCreation>(cmd2, _dbCon);
+                    
+                        var avaliableQty = 0.0;
+                        var curQty = 0.0;
+                        if(appMenuProdPrice.Count > 0){
+                            avaliableQty = appMenuProdPrice[0].availableqty;
+                            curQty = (avaliableQty + item.qty);
+                            cmd7 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"costPrice\" = '" + item.costPrice + "', \"salePrice\" = '" + item.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
+                        }else{
+                            cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', " + item.costPrice + ", " + item.salePrice + ", " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                        }
+                        // cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected6 = con.Execute(cmd7);
                         }
 
-                        var curQty = (item.availableqty - item.qty);
-                        cmd8 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + item.pPriceID + ";";
+                        var curSaleQty = (item.availableqty - item.qty);
+                        cmd8 = "update public.\"productPrice\" set \"availableqty\" = '" + curSaleQty + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + item.pPriceID + ";";
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected7 = con.Execute(cmd8);
