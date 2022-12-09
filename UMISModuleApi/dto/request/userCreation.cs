@@ -13,5 +13,11 @@ namespace UMISModuleApi.Entities
         public string Password { get; set; }
         public int outletid { get; set; }
         public int roleId { get; set; }
+        public string dateOfBirth { get; set; }
+        public string gender { get; set; }
+        public string applicationEDocPath { get; set; }
+        public string applicationEDoc { get; set; }
+        public string applicationEdocExtenstion { get; set; }
+        public int userTypeID { get; set; }
     }
 }

@@ -45,6 +45,23 @@ namespace UMISModuleApi.Controllers
 
         }
 
+        [HttpGet("getRoles")]
+        public IActionResult getRoles()
+        {
+            try
+            {
+                cmd = "SELECT \"roleID\",\"roleTitle\" from \"roles\" where \"isDeleted\" = 0";
+                var appMenu = dapperQuery.Qry<Roles>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getMenuRoleByModuleId")]
         public IActionResult getMenurole(int applicationModuleID)
         {

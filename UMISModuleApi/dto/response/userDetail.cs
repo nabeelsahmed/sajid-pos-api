@@ -15,5 +15,8 @@ namespace UMISModuleApi.Entities
         public string outletname { get; set; }
         public int roleId { get; set; }
         public string roleTitle { get; set; }
+        public string dateOfBirth { get; set; }
+        public string gender { get; set; }
+        public string applicationEDoc { get; set; }
     }
 }

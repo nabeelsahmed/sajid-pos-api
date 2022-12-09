@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using UMISModuleAPI.Configuration;
 using UMISModuleAPI.Entities;
 using Npgsql;
+using System.IO;
 
 namespace UMISModuleAPI.Services
 {
@@ -29,5 +30,25 @@ namespace UMISModuleAPI.Services
         //         return row;
         //     }
         // }
+        public static string saveImageFile(string regPath, string name, string binData, string ext)
+        {
+            String path = regPath; //Path
+            //Check if directory exist
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+            }
+
+            string imageName = name + "." + ext;
+
+            //set the image path
+            string imgPath = Path.Combine(path, imageName);
+
+            byte[] imageBytes = Convert.FromBase64String(binData);
+
+            System.IO.File.WriteAllBytes(imgPath, imageBytes);
+
+            return "Ok";
+        }
     }
 }
