@@ -7,10 +7,15 @@ using UMISModuleApi.Entities;
 using UMISModuleAPI.Entities;
 using UMISModuleAPI.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
+using System.Text.Json.Serialization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 using UMISModuleApi.dto.response;
-using UMISModuleAPI.Entities;
 using Newtonsoft.Json;
 using MimeKit;
+using System.Text;
 using MailKit;
 using Zaabee.SmtpClient;
 using Dapper;
@@ -31,8 +36,11 @@ namespace UMISModuleAPI.Controllers
         private string randomNumber;
         private readonly IOptions<conStr> _dbCon;
 
-        public UserController(IUserService userService, IOptions<conStr> dbCon)
+        private readonly JwtConfig _jwtConfig;
+
+        public UserController(IOptions<JwtConfig> jwtConfig, IUserService userService, IOptions<conStr> dbCon)
         {
+            _jwtConfig = jwtConfig.Value;
             _userService = userService;
             _dbCon = dbCon;
         }
@@ -273,11 +281,11 @@ namespace UMISModuleAPI.Controllers
                 {
                     if (obj.userTypeID == 1)
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "'," + obj.outletid + ", '" + obj.dateOfBirth + "', '" + obj.gender + "' ,'" + curDate + "', 0)";
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "'," + obj.outletid + ", '" + obj.dateOfBirth + "', '" + obj.gender + "' ,'" + curDate + "', 0," + obj.userTypeID + ")";
                     }
                     else
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "'," + obj.outletid + ",'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0)";    
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "','" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
                     }
                     
                     //cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ('"+newRoleID+"',1,'" +newUserID+ "','" + curDate + "', 0)";
@@ -368,7 +376,7 @@ namespace UMISModuleAPI.Controllers
                 // appMenuUser = (List<userCreation>)dapperQuery.QryResult<userCreation>(cmd, _dbCon);
                 if (obj.userTypeID == 1)
                 {
-                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDoc + "' where \"userID\"="+obj.userID+"";    
+                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"',\"outletid\" = '"+ obj.outletid +"', \"modifiedOn\" = '" + curDate + "' where \"userID\"="+obj.userID+"";    
                 }
                 else
                 {
@@ -382,7 +390,15 @@ namespace UMISModuleAPI.Controllers
 
                 if (rowAffected > 0)
                 {
-                    cmd2 = "update public.\"user_roles\" SET \"modifiedOn\"='"+curDate+"', \"modifiedBy\"="+obj.userID+" where \"userId\"="+obj.userID+"";
+                    
+                    if (obj.userTypeID == 1)
+                    {
+                        cmd2 = "update public.\"user_roles\" SET \"modifiedOn\"='"+curDate+"',\"roleId\"=" + obj.roleId + ", \"modifiedBy\"="+obj.userID+" where \"userId\"="+obj.userID+"";    
+                    }
+                    else
+                    {
+                        cmd2 = "update public.\"user_roles\" SET \"modifiedOn\"='"+curDate+"', \"modifiedBy\"="+obj.userID+" where \"userId\"="+obj.userID+"";
+                    }
 
                     using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                     {
@@ -403,7 +419,7 @@ namespace UMISModuleAPI.Controllers
                 if (rowAffected > 0 && rowAffected2 > 0)
                 {
                     response = "Success";
-                return Ok(new { message = response });
+                    return Ok(new { message = response });
 
                 }
                 else
@@ -421,6 +437,295 @@ namespace UMISModuleAPI.Controllers
                 return Ok(e);
             }
 
+        }
+
+        [HttpPost("updatePassword")]
+        public IActionResult updatePassword(UserCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+                
+
+
+                List<UserCreation> appMenuUserID = new List<UserCreation>();
+                cmd3 = "select \"userID\" from users ORDER BY \"userID\" DESC LIMIT 1";
+                appMenuUserID = (List<UserCreation>)dapperQuery.Qry<UserCreation>(cmd3, _dbCon);
+                
+                cmd2 = "UPDATE public.\"users\" SET \"Password\"='" + obj.Password + "' where \"userID\"="+obj.userID+"";
+            
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd2);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    
+                    response = "Try again";
+                    
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("forgetPassword")]
+        public IActionResult forgetPassword(UserCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+                
+                List<UserCreation> appMenuUserID = new List<UserCreation>();
+                cmd3 = "select \"userID\" from users ORDER BY \"userID\" DESC LIMIT 1";
+                appMenuUserID = (List<UserCreation>)dapperQuery.Qry<UserCreation>(cmd3, _dbCon);
+                
+                cmd2 = "UPDATE public.\"users\" SET \"Password\"='"+obj.Password+"' where \"loginName\"='"+obj.loginName+"'";
+            
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd2);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    
+                    response = "please try again later";
+                    
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("saveUserAddress")]
+        public IActionResult saveUserAddress(UserAddressCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+                var found = false;
+                var userAddress = "";
+                var newUserAddressID  = 0;
+
+                List<UserAddressCreation> appMenuAddress = new List<UserAddressCreation>();
+                cmd = "select \"address\" from user_address where \"address\"='" + obj.address + "'";
+                appMenuAddress = (List<UserAddressCreation>)dapperQuery.Qry<UserAddressCreation>(cmd, _dbCon);
+
+                List<UserAddressCreation> appMenuAddressID = new List<UserAddressCreation>();
+                cmd3 = "select \"userAddressID\" from user_address ORDER BY \"userAddressID\" DESC LIMIT 1";
+                appMenuAddressID = (List<UserAddressCreation>)dapperQuery.Qry<UserAddressCreation>(cmd3, _dbCon);
+                
+                if(appMenuAddressID.Count<=0)
+                {
+                    newUserAddressID = 1;
+                }
+                else
+                {
+                    newUserAddressID = appMenuAddressID[0].userAddressID+1;
+                }
+
+                if (appMenuAddress.Count > 0)
+                        userAddress = appMenuAddress[0].address;
+
+                if(userAddress=="")
+                {
+                    cmd2 = "insert into public.\"user_address\" (\"userAddressID\",\"userID\", \"city\", \"address\", \"isDeleted\", \"area\", \"label\") values ('"+newUserAddressID+"','" + obj.userID + "','" + obj.city + "','" + obj.address + "',0,'" + obj.area + "','" + obj.label + "')";
+                }
+                else
+                {
+                    found=true;
+                }
+                if (found == false)
+                {
+                    using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                    {
+                        rowAffected = con.Execute(cmd2);
+                    }
+                    
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    if (found == true)
+                    {
+                        response = "Address already exist";
+                    }
+                    else
+                    {
+                        response = "Server Issue";
+                    }
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("updateUserAddress")]
+        public IActionResult updateUserAddress(UserAddressCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+
+
+                List<UserAddressCreation> appMenuAddressID = new List<UserAddressCreation>();
+                cmd3 = "select \"userAddressID\" from user_address ORDER BY \"userAddressID\" DESC LIMIT 1";
+                appMenuAddressID = (List<UserAddressCreation>)dapperQuery.Qry<UserAddressCreation>(cmd3, _dbCon);
+                
+                cmd2 = "UPDATE public.\"user_address\" SET \"city\"='"+obj.city+"', \"address\"='"+obj.address+"', \"area\"='"+obj.area+"', \"label\"='"+obj.label+"' where \"userAddressID\"="+obj.userAddressID+" and \"userID\"="+obj.userID+"";
+            
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd2);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    
+                    response = "result not update";
+                    
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("deleteUserAddress")]
+        public IActionResult deleteUserAddress(UserAddressCreation obj)
+        {
+            try{
+                DateTime curDate = DateTime.Today;
+
+                DateTime curTime = DateTime.Now;
+                
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+
+
+                List<UserAddressCreation> appMenuAddressID = new List<UserAddressCreation>();
+                cmd3 = "select \"userAddressID\" from user_address ORDER BY \"userAddressID\" DESC LIMIT 1";
+                appMenuAddressID = (List<UserAddressCreation>)dapperQuery.Qry<UserAddressCreation>(cmd3, _dbCon);
+                
+                cmd2 = "UPDATE public.\"user_address\" SET \"isDeleted\"=1 where \"userAddressID\"="+obj.userAddressID+" and \"userID\"="+obj.userID+"";
+            
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd2);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                return Ok(new { message = response });
+
+                }
+                else
+                {
+                    
+                    response = "Try again";
+                    
+                return BadRequest(new { message = response });
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpGet("genToken")]
+        public string genToken()
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("userLoginId", "1") }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescription);
+            return tokenHandler.WriteToken(token);
         }
         
         [HttpGet("getTestData")]
