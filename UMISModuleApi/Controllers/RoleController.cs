@@ -63,7 +63,7 @@ namespace UMISModuleApi.Controllers
         }
 
         [HttpGet("getMenuRoleByModuleId")]
-        public IActionResult getMenurole(int applicationModuleID)
+        public IActionResult getMenuRoleByModuleId(int applicationModuleID)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace UMISModuleApi.Controllers
                 {
                     if (found == true)
                     {
-                        response = "Phone number already exist";
+                        response = "Role already exist";
                     }
                     else
                     {
