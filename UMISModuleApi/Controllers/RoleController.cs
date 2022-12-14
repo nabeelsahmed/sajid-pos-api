@@ -204,7 +204,7 @@ namespace UMISModuleApi.Controllers
                             newRoleDetailID = appMenuRoleDetailID[0].roleDetailID+1;
                         }
 
-                        cmd6 = "insert into public.\"roles_detail\" (\"roleDetailId\", \"menuId\", \"roleId\", \"createdOn\", \"createdBy\", \"isDeleted\", \"read\", \"write\", \"delete\") values (" + newRoleDetailID + ", '" + item.menuId + "', " + newRoleID + ", '" + curDate + "', " + obj.userID + ", 0," + item.read + "," + item.write + "," + item.delete + ")";
+                        cmd6 = "insert into public.\"roles_detail\" (\"roleDetailId\", \"menuId\", \"roleId\", \"createdOn\", \"createdBy\", \"isDeleted\", \"read\", \"write\", \"delete\") values (" + newRoleDetailID + ", '" + item.menuId + "', " + newRoleID + ", '" + curDate + "', " + obj.userID + ", 0," + Convert.ToInt32(item.read) + "," + Convert.ToInt32(item.write) + "," + Convert.ToInt32(item.delete) + ")";
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected2 = con.Execute(cmd6);
@@ -259,6 +259,7 @@ namespace UMISModuleApi.Controllers
                 var roleTitle = "";
                 var newRoleID = 0;
                 var newRoleDetailID = 0;
+                
 
                 List<RoleCreation> appMenuUser = new List<RoleCreation>();
                 cmd = "select \"roleTitle\" from roles where \"roleTitle\"='" + obj.roleTitle + "'";
@@ -306,7 +307,7 @@ namespace UMISModuleApi.Controllers
                     cmd5 = "update public.\"roles_detail\" set \"isDeleted\" = 1 where \"roleId\" = " + obj.roleID + ";";
                     using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                     {
-                        rowAffected = con.Execute(cmd5);
+                        rowAffected2 = con.Execute(cmd5);
                     }
 
                     var invObject = JsonConvert.DeserializeObject<List<RoleDetailCreation>>(obj.json);
@@ -319,8 +320,10 @@ namespace UMISModuleApi.Controllers
 
                         List<RoleDetailCreation> appMenuRoleMenuDetail = new List<RoleDetailCreation>();
                         cmd6 = "select \"roleDetailId\" from roles_detail where \"roleId\" = " + obj.roleID + " and \"menuId\" = " + item.menuId + " ";
-                        appMenuRoleMenuDetail = (List<RoleDetailCreation>)dapperQuery.Qry<RoleDetailCreation>(cmd4, _dbCon);
+                        appMenuRoleMenuDetail = (List<RoleDetailCreation>)dapperQuery.Qry<RoleDetailCreation>(cmd6, _dbCon);
                         
+
+
                         if (appMenuRoleMenuDetail.Count == 0)
                         {
                             if(appMenuRoleDetailID.Count == 0)
@@ -330,7 +333,7 @@ namespace UMISModuleApi.Controllers
                                 newRoleDetailID = appMenuRoleDetailID[0].roleDetailID+1;
                             }
 
-                            cmd6 = "insert into public.\"roles_detail\" (\"roleDetailId\", \"menuId\", \"roleId\", \"createdOn\", \"createdBy\", \"isDeleted\", \"read\", \"write\", \"delete\") values (" + newRoleDetailID + ", '" + item.menuId + "', " + newRoleID + ", '" + curDate + "', " + obj.userID + ", 0," + item.read + "," + item.write + "," + item.delete + ")";
+                            cmd6 = "insert into public.\"roles_detail\" (\"roleDetailId\", \"menuId\", \"roleId\", \"createdOn\", \"createdBy\", \"isDeleted\", \"read\", \"write\", \"delete\") values (" + newRoleDetailID + ", '" + item.menuId + "', " + obj.roleID + ", '" + curDate + "', " + obj.userID + ", 0," + Convert.ToInt32(item.read) + "," + Convert.ToInt32(item.write) + "," + Convert.ToInt32(item.delete) + ")";
                             using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                             {
                                 rowAffected2 = con.Execute(cmd6);

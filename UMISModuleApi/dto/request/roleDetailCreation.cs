@@ -9,8 +9,8 @@ namespace UMISModuleApi.Entities
     {
         public int roleDetailID { get; set; }
         public int menuId { get; set; }
-        public int read { get; set; }
-        public int write { get; set; }
-        public int delete { get; set; }
+        public bool read { get; set; }
+        public bool write { get; set; }
+        public bool delete { get; set; }
     }
 }
