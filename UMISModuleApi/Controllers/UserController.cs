@@ -285,7 +285,7 @@ namespace UMISModuleAPI.Controllers
                     }
                     else
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "','" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",, \"outletid\" \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
                     }
                     
                     //cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ('"+newRoleID+"',1,'" +newUserID+ "','" + curDate + "', 0)";
@@ -311,7 +311,7 @@ namespace UMISModuleAPI.Controllers
                     }
                     else
                     {
-                        cmd4 = "insert into public.\"user_roles\" (\"userRoleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ("+newUserRoleID+"," + newUserID + ",'" + curDate + "', 0)";
+                        cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",,\"roleId\" \"userId\",\"createdOn\", \"isDeleted\") VALUES ("+newUserRoleID+",1," + newUserID + ",'" + curDate + "', 0)";
                     }
                     
                     using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
