@@ -285,7 +285,7 @@ namespace UMISModuleAPI.Controllers
                     }
                     else
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",, \"outletid\" \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",\"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
                     }
                     
                     //cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ('"+newRoleID+"',1,'" +newUserID+ "','" + curDate + "', 0)";
@@ -311,7 +311,7 @@ namespace UMISModuleAPI.Controllers
                     }
                     else
                     {
-                        cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",,\"roleId\" \"userId\",\"createdOn\", \"isDeleted\") VALUES ("+newUserRoleID+",1," + newUserID + ",'" + curDate + "', 0)";
+                        cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ("+newUserRoleID+",1," + newUserID + ",'" + curDate + "', 0)";
                     }
                     
                     using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
@@ -380,7 +380,7 @@ namespace UMISModuleAPI.Controllers
                 }
                 else
                 {
-                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDoc + "' where \"userID\"="+obj.userID+"";
+                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDocPath + "' where \"userID\"="+obj.userID+"";
                 }
                 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
@@ -408,9 +408,9 @@ namespace UMISModuleAPI.Controllers
                     if (obj.applicationEDocPath != null && obj.applicationEDocPath != "")
                     {
                         dapperQuery.saveImageFile(
-                            obj.applicationEDoc,
-                            obj.userID.ToString(),
                             obj.applicationEDocPath,
+                            obj.userID.ToString(),
+                            obj.applicationEDoc,
                             obj.applicationEdocExtenstion);
                     }
                     
@@ -450,6 +450,7 @@ namespace UMISModuleAPI.Controllers
                 var time = curTime.ToString("HH:mm");
 
                 int rowAffected = 0;
+                int rowAffected2 = 0;
                 var response = "";
 
 
@@ -457,11 +458,18 @@ namespace UMISModuleAPI.Controllers
                 cmd3 = "select \"userAddressID\" from user_address ORDER BY \"userAddressID\" DESC LIMIT 1";
                 appMenuAddressID = (List<UserCreation>)dapperQuery.Qry<UserCreation>(cmd3, _dbCon);
                 
+
                 cmd2 = "UPDATE public.\"users\" SET \"isDeleted\"=1 where \"userID\"="+obj.userID+"";
+                cmd3 = "UPDATE public.\"user_roles\" SET \"isDeleted\"=1 where \"userId\"="+obj.userID+"";
             
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
                     rowAffected = con.Execute(cmd2);
+                }
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected2 = con.Execute(cmd3);
                 }
 
                 if (rowAffected > 0)
@@ -600,7 +608,7 @@ namespace UMISModuleAPI.Controllers
                 var newUserAddressID  = 0;
 
                 List<UserAddressCreation> appMenuAddress = new List<UserAddressCreation>();
-                cmd = "select \"address\" from user_address where \"address\"='" + obj.address + "'";
+                cmd = "select \"address\" from user_address where \"address\"='" + obj.address + "' and \"userID\" = " + obj.userID + " and \"isDeleted\" = 0";
                 appMenuAddress = (List<UserAddressCreation>)dapperQuery.Qry<UserAddressCreation>(cmd, _dbCon);
 
                 List<UserAddressCreation> appMenuAddressID = new List<UserAddressCreation>();
