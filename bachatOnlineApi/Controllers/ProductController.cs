@@ -143,7 +143,7 @@ namespace bachatOnlineApi.Controllers
                 var response = "";
                 List<Order> appMenuOrder = new List<Order>();
 
-                cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "', '" + curDate + "', B'0')";
+                cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\",\"status\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "','pend' ,'" + curDate + "', B'0')";
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
