@@ -7,6 +7,7 @@ namespace posCoreModuleApi.Entities
     public class Product
     {
         public int productID { get; set; }
+        public int parentProductID { get; set; }
         public int locationID { get; set; }
         public int brandID { get; set; }
         public int categoryID { get; set; }
