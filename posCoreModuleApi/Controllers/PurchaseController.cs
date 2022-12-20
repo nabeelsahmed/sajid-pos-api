@@ -133,22 +133,23 @@ namespace posCoreModuleApi.Controllers
                         salePrice = (item.salePrice + item.laborCost + item.freightCharges) /  item.qty;
 
                         
-                        // List<InvoiceDetailCreation> appMenuInvoice = new List<InvoiceDetailCreation>();
+                        List<InvoiceDetailCreation> appMenuProdPrice = new List<InvoiceDetailCreation>();
 
-                        // //getting available qty for saved products
-                        // cmd2 = "select availableqty from \"productPrice\" where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
-                        // appMenuInvoice = (List<InvoiceDetailCreation>)dapperQuery.QryResult<InvoiceDetailCreation>(cmd2, _dbCon);
+                        //getting available qty for saved products
+                        cmd2 = "select availableqty from \"productPrice\" where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
+                        appMenuProdPrice = (List<InvoiceDetailCreation>)dapperQuery.QryResult<InvoiceDetailCreation>(cmd2, _dbCon);
                     
-                        // var avaliableQty = 0.0;
-                        // if(appMenuInvoice.Count > 0){
-                        //     avaliableQty = appMenuInvoice[0].availableqty;
-                        //     var curQty = (avaliableQty + item.qty);
-                        //     cmd7 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"costPrice\",  \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
-                        // }else{
-                        //     cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', " + costPrice + ", " + salePrice + ", " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
-                        // }
+                        var avaliableQty = 0.0;
+                        var curQty = 0.0;
+                        if(appMenuProdPrice.Count > 0){
+                            avaliableQty = appMenuProdPrice[0].availableqty;
+                            curQty = (avaliableQty + item.qty);
+                            cmd7 = "update public.\"productPrice\" set \"availableqty\" = '" + curQty + "', \"costPrice\" = '" + item.costPrice + "', \"salePrice\" = '" + item.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + item.productID + " AND outletid = " + obj.outletid + ";";
+                        }else{
+                            cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', " + item.costPrice + ", " + item.salePrice + ", " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                        }
 
-                        cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', " + costPrice + ", " + salePrice + ", " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
+                        // cmd7 = "insert into public.\"productPrice\" (\"productID\", \"purchaseid\", \"availableqty\", \"costPrice\", \"salePrice\", \"outletid\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + item.productID + ", '" + invoiceNo + "', '" + item.qty + "', " + costPrice + ", " + salePrice + ", " + obj.outletid + ", '" + curDate + "', " + obj.userID + ", B'0')";
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected6 = con.Execute(cmd7);
