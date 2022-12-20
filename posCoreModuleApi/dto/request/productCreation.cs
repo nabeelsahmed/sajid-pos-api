@@ -36,5 +36,6 @@ namespace posCoreModuleApi.Entities
         public int userID { get; set; }
         public Nullable<int> colorID { get; set; }
         public Nullable<int> sizeID { get; set; }
+        public Nullable<int> parentProductID { get; set; }
     }
 }

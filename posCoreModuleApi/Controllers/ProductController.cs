@@ -41,6 +41,22 @@ namespace posCoreModuleApi.Controllers
 
         }
 
+        [HttpGet("getProductParent")]
+        public IActionResult getProductParent()
+        {
+            try
+            {
+                cmd = "SELECT * FROM \"view_allProduct\" where \"parentProductID\" is null order by \"productID\" desc";
+                var appMenu = dapperQuery.Qry<Product>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getAllProduct")]
         public IActionResult getAllProduct()
         {
@@ -189,7 +205,7 @@ namespace posCoreModuleApi.Controllers
                 // obj.applicationEDoc
                 if (productName == "")
                 {
-                    cmd = "insert into public.product (\"uomID\", \"productName\", \"categoryID\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + obj.uomID + ", '" + obj.productName + "', '2', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.product (\"uomID\", \"productName\", \"categoryID\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"parentProductID\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + obj.uomID + ", '" + obj.productName + "', '2', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + obj.parentProductID + "', '" + curDate + "', " + obj.userID + ", B'0')";
                 }
                 else
                 {
@@ -296,9 +312,9 @@ namespace posCoreModuleApi.Controllers
                 var response = "";
 
             if(obj.applicationEDoc == ""){
-                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"parentProductID\" = '" + obj.parentProductID + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
             }else{
-                cmd = "update product set \"uomID\" = " + obj.uomID + ", applicationedoc = '" + obj.applicationEDoc + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"parentProductID\" = '" + obj.parentProductID + "', applicationedoc = '" + obj.applicationEDoc + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
             }
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
