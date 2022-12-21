@@ -14,7 +14,7 @@ namespace bachatOnlineModuleApi.Entities
         // public int invoiceDetailID { get; set; }
         public string productName { get; set; }
         public int qty { get; set; }
-        public int availQty { get; set; }
+        public float availQty { get; set; }
         public float salePrice { get; set; }
     }
 }
