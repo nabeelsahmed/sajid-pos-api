@@ -127,6 +127,38 @@ namespace bachatOnlineApi.Controllers
 
         }
 
+        [HttpGet("getAllOrder")]
+        public IActionResult getAllOrder(int userID)
+        {
+            try
+            {
+                cmd = "select * from public.\"view_OrderDetail\" where \"createdBy\" = " + userID + "";
+                var appMenu = dapperQuery.QryResult<OrderInformation>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+        [HttpGet("getPlacedNotification")]
+        public IActionResult getPlacedNotification(int userID)
+        {
+            try
+            {
+                cmd = "select * from public.\"view_notify\" where \"createdBy\"="+userID+"";
+                var appMenu = dapperQuery.QryResult<Notification>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
         [HttpPost("checkout")]
         public IActionResult checkout(OrderCreation obj)
         {
@@ -168,7 +200,7 @@ namespace bachatOnlineApi.Controllers
                     foreach (var item in invObject)
                     {
                         // cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"locationID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.locationID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', 0, '" + item.qty * item.salePrice + "', '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
-                        cmd3 = "INSERT INTO public.\"OrderDetail\"(\"orderID\", \"productID\", \"productName\", qty, price, \"createdOn\", \"isDeleted\") VALUES ('" + orderID + "', '" + item.productID + "',  '" + item.productName + "',  '" + item.qty + "',  '" + item.salePrice + "', '" + curDate + "', B'0')";
+                        cmd3 = "INSERT INTO public.\"OrderDetail\"(\"orderID\", \"productID\", \"productName\", qty, price, \"createdOn\",\"createdBy\", \"isDeleted\") VALUES ('" + orderID + "', '" + item.productID + "',  '" + item.productName + "',  '" + item.qty + "',  '" + item.salePrice + "', '" + curDate + "', " + item.userID + " , B'0')";
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
                             rowAffected2 = con.Execute(cmd3);
@@ -249,6 +281,93 @@ namespace bachatOnlineApi.Controllers
 
         }
 
+        [HttpPost("cancelOrder")]
+        public IActionResult cancelOrder(OrderCreation obj)
+        {
+            try
+            {
+                DateTime curDate = DateTime.Today;
+                DateTime curTime = DateTime.Now;
+
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+
+                cmd = "update public.\"Order\" set \"status\" = 'canl' where \"orderID\" = " + obj.orderID + ";";
+
+                // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Order did not exists";
+                }
+
+                return Ok(new { message = response });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpGet("getRecommended")]
+        public IActionResult getRecommended()
+        {
+            try
+            {
+                cmd = "SELECT * FROM public.\"view_recommended\"";
+                var appMenu = dapperQuery.QryResult<ProductDetail>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+        [HttpPost("saveRecommended")]
+        public IActionResult saveRecommended(int productID,int isRecommended)
+        {
+            try
+            {
+                int rowAffected = 0;
+                var response = "";
+
+                cmd = "update public.\"product\" set \"isrecommended\"="+isRecommended+" where \"productID\" = " + productID + " and \"isDeleted\"=B'0'";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Server Issue";
+                }
+
+                return Ok(new { message = response });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
 
     }
 }
