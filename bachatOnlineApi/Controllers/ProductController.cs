@@ -111,12 +111,12 @@ namespace bachatOnlineApi.Controllers
         }
 
         [HttpGet("getOrderDetail")]
-        public IActionResult getOrderDetail(int orderID)
+        public IActionResult getOrderDetail(int orderID,int userID)
         {
             try
             {
-                cmd = "select * from public.\"OrderDetail\" where \"orderID\" = " + orderID + "";
-                var appMenu = dapperQuery.QryResult<OrderDetail>(cmd, _dbCon);
+                cmd = "select * from public.\"view_OrderDetail\" where \"orderID\" = " + orderID + " and \"createdBy\" = " + userID + "";
+                var appMenu = dapperQuery.QryResult<OrderInformation>(cmd, _dbCon);
 
                 return Ok(appMenu);
             }

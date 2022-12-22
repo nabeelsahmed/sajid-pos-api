@@ -285,7 +285,7 @@ namespace UMISModuleAPI.Controllers
                     }
                     else
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",\"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",\"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\",\"mobile\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ",'" + obj.mobile + "')";    
                     }
                     
                     //cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ('"+newRoleID+"',1,'" +newUserID+ "','" + curDate + "', 0)";
@@ -380,7 +380,7 @@ namespace UMISModuleAPI.Controllers
                 }
                 else
                 {
-                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDocPath + "' where \"userID\"="+obj.userID+"";
+                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDocPath + "', \"mobile\" = '" + obj.mobile + "' where \"userID\"="+obj.userID+"";
                 }
                 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
