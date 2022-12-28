@@ -34,6 +34,28 @@
       "UpstreamPathTemplate": "/user-api/genOTP"
     },
     {
+      "DownstreamPathTemplate": "/User/saveUser",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7051"
+        }
+      ],
+      "UpstreamPathTemplate": "/user-api/saveUser"
+    },
+    {
+      "DownstreamPathTemplate": "/User/forgetPassword",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7001"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth-api/forgetPassword"
+    },
+    {
       "DownstreamPathTemplate": "/User/getVerifyOTP",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
