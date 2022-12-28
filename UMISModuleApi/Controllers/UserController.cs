@@ -509,7 +509,6 @@ namespace UMISModuleAPI.Controllers
                 var response = "";
                 
 
-
                 List<UserCreation> appMenuUserID = new List<UserCreation>();
                 cmd3 = "select \"userID\" from users ORDER BY \"userID\" DESC LIMIT 1";
                 appMenuUserID = (List<UserCreation>)dapperQuery.Qry<UserCreation>(cmd3, _dbCon);
