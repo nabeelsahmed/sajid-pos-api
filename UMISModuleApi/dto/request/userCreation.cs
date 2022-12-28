@@ -19,6 +19,5 @@ namespace UMISModuleApi.Entities
         public string applicationEDoc { get; set; }
         public string applicationEdocExtenstion { get; set; }
         public int userTypeID { get; set; }
-        public string mobile { get; set; }
     }
 }

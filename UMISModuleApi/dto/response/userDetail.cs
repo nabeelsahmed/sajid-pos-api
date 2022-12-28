@@ -18,6 +18,5 @@ namespace UMISModuleApi.Entities
         public string dateOfBirth { get; set; }
         public string gender { get; set; }
         public string applicationEDoc { get; set; }
-        public string mobile { get; set; }
     }
 }
