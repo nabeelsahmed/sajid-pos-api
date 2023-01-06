@@ -205,7 +205,7 @@ namespace posCoreModuleApi.Controllers
                 // obj.applicationEDoc
                 if (productName == "")
                 {
-                    cmd = "insert into public.product (\"uomID\", \"productName\", \"categoryID\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"parentProductID\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + obj.uomID + ", '" + obj.productName + "', '2', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + obj.parentProductID + "', '" + curDate + "', " + obj.userID + ", B'0')";
+                    cmd = "insert into public.product (\"uomID\", \"productName\", \"categoryID\", \"productNameUrdu\", \"ROL\", \"maxLimit\", \"quickSale\", \"pctCode\", \"applicationedoc\", \"parentProductID\", \"createdOn\", \"createdBy\", \"isDeleted\") values (" + obj.uomID + ", '" + obj.productName + "', '" + obj.categoryID + "', '" + obj.productNameUrdu + "', '" + obj.reOrderLevel + "', '" + obj.maxLimit + "', '" + obj.quickSale + "', '" + obj.pctCode + "', '" + obj.applicationEDoc + "', '" + obj.parentProductID + "', '" + curDate + "', " + obj.userID + ", B'0')";
                 }
                 else
                 {
