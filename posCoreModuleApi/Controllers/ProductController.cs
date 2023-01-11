@@ -312,9 +312,9 @@ namespace posCoreModuleApi.Controllers
                 var response = "";
 
             if(obj.applicationEDoc == ""){
-                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"parentProductID\" = '" + obj.parentProductID + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"categoryID\" = " + obj.categoryID + ", \"parentProductID\" = '" + obj.parentProductID + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
             }else{
-                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"parentProductID\" = '" + obj.parentProductID + "', applicationedoc = '" + obj.applicationEDoc + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
+                cmd = "update product set \"uomID\" = " + obj.uomID + ", \"categoryID\" = " + obj.categoryID + ", \"parentProductID\" = '" + obj.parentProductID + "', applicationedoc = '" + obj.applicationEDoc + "', \"productName\" = '" + obj.productName + "', \"quickSale\" = '" + obj.quickSale + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"productID\" = " + obj.productID + ";";
             }
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))

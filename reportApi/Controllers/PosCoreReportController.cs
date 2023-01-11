@@ -43,6 +43,24 @@ namespace reportApi.Controllers
             }
         }
         
+        [HttpGet("getAvailProductQty")]
+        public IActionResult getAvailProductQty(string currentDate, int outletID)
+        {
+            try
+            {
+            
+                cmd = "select * from fun_availProductQty('" + currentDate + "', " + outletID + ")";
+
+                var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
+                return Ok(appMenu);
+            
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+        
         [HttpGet("getDailySalesOutlet")]
         public IActionResult getDailySalesOutlet( string fromDate, string toDate,int outletID)
         {
