@@ -49,6 +49,30 @@ namespace bachatOnlineApi.Controllers
 
         }
 
+        [HttpGet("getDeliveryCharges")]
+        public IActionResult getDeliveryCharges(int deliveryChargesID)
+        {
+            try
+            {
+                if (deliveryChargesID == 0)
+                {
+                    cmd = "select * from \"tbl_deliveryCharges\" where \"isDeleted\" = B'0'";    
+                }
+                else
+                {
+                    cmd = "select * from \"tbl_deliveryCharges\" where \"deliveryChargesID\" = " + deliveryChargesID + "";
+                }
+
+                var appMenu = dapperQuery.Qry<DeliveryCharges>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getOnlineProduct")]
         public IActionResult getOnlineProduct()
         {
@@ -252,18 +276,61 @@ namespace bachatOnlineApi.Controllers
                 var time = curTime.ToString("HH:mm");
 
                 int rowAffected = 0;
+                int rowAffected2 = 0;
+                int rowAffected3 = 0;
                 var response = "";
+                List<OrderDetailCreation> appMenuOrder = new List<OrderDetailCreation>();
 
-                cmd = "update public.\"Order\" set status = '" + obj.status + "' where \"orderID\" = " + obj.orderID + ";";
-
-                // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
+                cmd = "insert into public.\"invoice\" (\"invoiceDate\", \"discount\", \"invoiceType\", \"orderID\",\"isDeleted\",\"invoicetime\") values ('" + curDate + "',0,'OS'," + obj.orderID + ", B'0','" + curTime + "')";
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
                     rowAffected = con.Execute(cmd);
                 }
 
-                if (rowAffected > 0)
+                cmd2 = "update public.\"Order\" set status = '" + obj.status + "' where \"orderID\" = " + obj.orderID + ";";
+
+                // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected2 = con.Execute(cmd2);
+                }
+
+                cmd3 = "SELECT \"invoiceNo\" FROM public.\"invoice\" where \"orderID\" = " + obj.orderID + "";
+                    appMenuOrder = (List<OrderDetailCreation>)dapperQuery.QryResult<OrderDetailCreation>(cmd3, _dbCon);
+
+                    var invoiceNo = appMenuOrder[0].invoiceNo;
+
+                if (rowAffected > 0 && rowAffected2 > 0)
+                {   
+
+                    //convert string to json data to insert in invoice detail table
+                    var invObject = JsonConvert.DeserializeObject<List<OrderDetailCreation>>(obj.json);
+
+
+                    //saving json data one by one in invoice detail table
+                    foreach (var item in invObject)
+                    {
+                        // cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"locationID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.locationID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', 0, '" + item.qty * item.salePrice + "', '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
+                        if (item.productID > 0)
+                        {
+                            cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\", \"productID\", \"qty\",\"salePrice\", \"productQty\",\"productName\",\"createdOn\",\"createdBy\",\"isDeleted\") VALUES (" + invoiceNo + "," + item.productID + "," + item.qty + ",'" + item.salePrice + "'," + item.qty + ",'" + item.productName + "','" + curDate + "'," + item.userID + ",B'0')";
+                        }
+                        else
+                        {
+                            cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\",\"salePrice\",\"createdOn\",\"createdBy\",\"isDeleted\",\"deliveryChargesID\") VALUES (" + invoiceNo + ",'" + item.salePrice + "','" + curDate + "'," + item.userID + ",B'0'," + item.deliveryChargesID + ")";
+                        }
+                        
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected3 = con.Execute(cmd4);
+                        }
+
+                    }
+                }
+
+                if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
                 {
                     response = "Success";
                 }
@@ -346,6 +413,96 @@ namespace bachatOnlineApi.Controllers
                 var response = "";
 
                 cmd = "update public.\"product\" set \"isrecommended\"="+isRecommended+" where \"productID\" = " + productID + " and \"isDeleted\"=B'0'";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Server Issue";
+                }
+
+                return Ok(new { message = response });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+
+        [HttpPost("saveDeliveryCharges")]
+        public IActionResult saveDeliveryCharges(DeliveryChargesCreation obj)
+        {
+            try
+            {
+                int rowAffected = 0;
+                var response = "";
+                int newDeliveryChargesID = 0;
+
+                List<DeliveryCharges> appMenuProduct = new List<DeliveryCharges>();
+                cmd = "select \"deliveryChargesID\" from \"tbl_deliveryCharges\" ORDER BY \"deliveryChargesID\" DESC LIMIT 1";
+                appMenuProduct = (List<DeliveryCharges>)dapperQuery.QryResult<DeliveryCharges>(cmd, _dbCon);
+
+                if(appMenuProduct.Count == 0)
+                    {
+                        newDeliveryChargesID = 1;
+                    }else{
+                        newDeliveryChargesID = appMenuProduct[0].deliveryChargesID+1;
+                    }
+
+                cmd = "INSERT INTO public.\"tbl_deliveryCharges\"(\"deliveryChargesID\",\"deliveryChargesDate\",\"amount\",\"description\",\"isDeleted\") VALUES (" + newDeliveryChargesID + ",'" + obj.deliveryChargesDate + "','" + obj.amount + "','" + obj.description + "',B'0')";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                if (rowAffected > 0)
+                {
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Server Issue";
+                }
+
+                return Ok(new { message = response });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+        }
+
+
+        [HttpPost("deleteDeliveryCharges")]
+        public IActionResult deleteDeliveryCharges(DeliveryChargesCreation obj)
+        {
+            try
+            {
+                int rowAffected = 0;
+                var response = "";
+                int newDeliveryChargesID = 0;
+
+                // List<DeliveryCharges> appMenuProduct = new List<DeliveryCharges>();
+                // cmd = "select \"deliveryChargesID\" from \"tbl_deliveryCharges\" ORDER BY \"deliveryChargesID\" DESC LIMIT 1";
+                // appMenuProduct = (List<DeliveryCharges>)dapperQuery.QryResult<DeliveryCharges>(cmd, _dbCon);
+
+                // if(appMenuProduct.Count == 0)
+                //     {
+                //         newDeliveryChargesID = 1;
+                //     }else{
+                //         newDeliveryChargesID = appMenuProduct[0].deliveryChargesID+1;
+                //     }
+
+                cmd = "update public.\"tbl_deliveryCharges\" set \"isDeleted\" = B'0' where \"deliveryChargesID\" = " + obj.deliveryChargesID + ";";
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {

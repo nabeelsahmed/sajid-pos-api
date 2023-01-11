@@ -15,5 +15,7 @@ namespace bachatOnlineModuleApi.Entities
         public float availableqty { get; set; }
         public int outletid { get; set; }
         public string invoiceDate { get; set; }
+        public int categoryID { get; set; }
+        public string categoryName { get; set; }
     }
 }
