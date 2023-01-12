@@ -50,7 +50,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "7001"
+          "Port": "7051"
         }
       ],
       "UpstreamPathTemplate": "/auth-api/forgetPassword"
