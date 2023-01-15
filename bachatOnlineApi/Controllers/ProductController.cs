@@ -38,7 +38,7 @@ namespace bachatOnlineApi.Controllers
         {
             try
             {
-                cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + ";";
+                cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + " and \"parentProductID\" is not null and \"parentProductID\" != 0;";
                 var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
                 return Ok(appMenu);
             }
