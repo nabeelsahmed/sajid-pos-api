@@ -183,6 +183,23 @@ namespace bachatOnlineApi.Controllers
             }
         }
 
+        [HttpGet("getOrderHistory")]
+        public IActionResult getOrderHistory(string fromDate, string toDate)
+        {
+            try
+            {
+                cmd = "select * from public.\"Order\" where status = 'comp' AND \"orderDate\" between '" + fromDate + "' AND '" + toDate + "'";
+                var appMenu = dapperQuery.QryResult<Order>(cmd, _dbCon);
+
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getPlacedNotification")]
         public IActionResult getPlacedNotification(int userID)
         {
@@ -368,6 +385,46 @@ namespace bachatOnlineApi.Controllers
                 }
 
                 if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
+                {
+                    response = "Success";
+                }
+                else
+                {
+                    response = "Server Issue";
+                }
+
+                return Ok(new { message = response });
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
+        [HttpPost("acceptOrDeclineOrder")]
+        public IActionResult acceptOrDeclineOrder(OrderCreation obj)
+        {
+            try
+            {
+                DateTime curDate = DateTime.Today;
+                DateTime curTime = DateTime.Now;
+
+                var time = curTime.ToString("HH:mm");
+
+                int rowAffected = 0;
+                var response = "";
+
+                cmd = "update public.\"Order\" set status = '" + obj.status + "' where \"orderID\" = " + obj.orderID + ";";
+
+                // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
+
+                using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                {
+                    rowAffected = con.Execute(cmd);
+                }
+
+                if (rowAffected > 0)
                 {
                     response = "Success";
                 }
