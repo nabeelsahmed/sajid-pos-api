@@ -73,6 +73,22 @@ namespace bachatOnlineApi.Controllers
 
         }
 
+        [HttpGet("getPortalAvailProduct")]
+        public IActionResult getPortalAvailProduct(int outletID)
+        {
+            try
+            {
+                cmd = "select * from \"view_portalSaleAvailableProduct\" where outletid = " + outletID + " and \"parentProductID\" is not null and \"parentProductID\" != 0;";
+                var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
+                return Ok(appMenu);
+            }
+            catch (Exception e)
+            {
+                return Ok(e);
+            }
+
+        }
+
         [HttpGet("getOnlineProduct")]
         public IActionResult getOnlineProduct()
         {
@@ -342,7 +358,13 @@ namespace bachatOnlineApi.Controllers
                             rowAffected3 = con.Execute(cmd4);
                         }
                     }
+
+                    cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\",\"salePrice\",\"createdOn\",\"isDeleted\") VALUES (" + invoiceNo + ",'" + obj.deliveryCharges + "','" + curDate + "',B'0')";
                     
+                    using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected3 = con.Execute(cmd4);
+                        }
                 }
 
                 if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
