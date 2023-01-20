@@ -279,6 +279,8 @@ namespace bachatOnlineApi.Controllers
                 int rowAffected2 = 0;
                 int rowAffected3 = 0;
                 var response = "";
+                //var orderObj = "";
+
                 List<OrderDetailCreation> appMenuOrder = new List<OrderDetailCreation>();
 
                 cmd = "insert into public.\"invoice\" (\"invoiceDate\", \"discount\", \"invoiceType\", \"orderID\",\"isDeleted\",\"invoicetime\") values ('" + curDate + "',0,'OS'," + obj.orderID + ", B'0','" + curTime + "')";
@@ -306,12 +308,25 @@ namespace bachatOnlineApi.Controllers
                 {   
 
                     //convert string to json data to insert in invoice detail table
-                    var invObject = JsonConvert.DeserializeObject<List<OrderDetailCreation>>(obj.json);
+                    cmd3 = "select array_to_json(array_agg(row_to_json(\"OrderDetail\"))) as json from ( select rd.* from \"OrderDetail\" rd where rd.\"orderID\" = " + obj.orderID + ") \"OrderDetail\"";
 
+                    // using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                    //     {
+                    //         orderObj = con.Execute(cmd3);
+                    //     }
+                    List<OrderCreation> appMenuInvoice = new List<OrderCreation>();
+
+                    appMenuInvoice = (List<OrderCreation>)dapperQuery.Qry<OrderCreation>(cmd3, _dbCon);
+                    
+                    var orderObj = appMenuInvoice[0].json;
+
+                    var invObject = JsonConvert.DeserializeObject<List<OrderDetailCreation>>(orderObj);
 
                     //saving json data one by one in invoice detail table
                     foreach (var item in invObject)
                     {
+                        
+                    
                         // cmd3 = "insert into public.\"invoiceDetail\" (\"invoiceNo\", \"productID\", \"locationID\", \"qty\", \"costPrice\", \"salePrice\", \"debit\", \"credit\", \"discount\", \"productName\", \"coaID\", \"createdOn\", \"createdBy\", \"isDeleted\") values ('" + invoiceNo + "', '" + item.productID + "', '" + item.locationID + "', '" + item.qty + "', '" + item.costPrice + "', '" + item.salePrice + "', 0, '" + item.qty * item.salePrice + "', '" + item.discount + "', '" + item.productName + "', '1', '" + curDate + "', " + obj.userID + ", B'0')";
                         if (item.productID > 0)
                         {
@@ -326,8 +341,8 @@ namespace bachatOnlineApi.Controllers
                         {
                             rowAffected3 = con.Execute(cmd4);
                         }
-
                     }
+                    
                 }
 
                 if (rowAffected > 0 && rowAffected2 > 0 && rowAffected3 > 0)
