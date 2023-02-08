@@ -34,11 +34,18 @@ namespace bachatOnlineApi.Controllers
         }
 
         [HttpGet("getAvailProduct")]
-        public IActionResult getAvailProduct(int outletID)
+        public IActionResult getAvailProduct(int outletID,int categoryID)
         {
             try
             {
-                cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + " and \"parentProductID\" is not null and \"parentProductID\" != 0;";
+                if (categoryID == 0)
+                {
+                    cmd = "select * from \"view_saleAvailableProduct\" where outletid = " + outletID + " and \"parentProductID\" is not null and \"parentProductID\" != 0;";   
+                }
+                else
+                {
+                    cmd = "select * from \"view_saleAvailableProduct\" where \"categoryID\" = " + categoryID + " and outletid = " + outletID + " and \"parentProductID\" is not null and \"parentProductID\" != 0;";
+                }
                 var appMenu = dapperQuery.Qry<AvailProduct>(cmd, _dbCon);
                 return Ok(appMenu);
             }
