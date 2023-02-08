@@ -138,7 +138,7 @@ namespace bachatOnlineApi.Controllers
         {
             try
             {
-                cmd = "select * from public.\"Order\" where status = 'pend' OR status is null";
+                cmd = "select * from public.\"Order\" where status = 'pend' OR status is null or status = ''";
                 var appMenu = dapperQuery.QryResult<Order>(cmd, _dbCon);
 
                 return Ok(appMenu);
@@ -232,7 +232,7 @@ namespace bachatOnlineApi.Controllers
                 var response = "";
                 List<Order> appMenuOrder = new List<Order>();
 
-                cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\",\"status\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "','pend' ,'" + curDate + "', B'0')";
+                cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\",\"status\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "','' ,'" + curDate + "', B'0')";
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
