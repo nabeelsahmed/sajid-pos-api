@@ -9,5 +9,6 @@ namespace posCoreModuleApi.Entities
         public int pPriceID { get; set; }
         public int userID { get; set; }
         public float salePrice { get; set; }
+        public float availableqty { get; set; }
     }
 }

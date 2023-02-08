@@ -409,7 +409,7 @@ namespace posCoreModuleApi.Controllers
                 int rowAffected = 0;
 
                 var response = "";
-                cmd = "update public.\"productPrice\" set \"salePrice\" = '" + obj.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + obj.pPriceID + ";";
+                cmd = "update public.\"productPrice\" set availableqty = '" + obj.availableqty + "', \"salePrice\" = '" + obj.salePrice + "', \"modifiedOn\" = '" + curDate + "', \"modifiedBy\" = " + obj.userID + " where \"pPriceID\" = " + obj.pPriceID + ";";
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {
                     rowAffected = con.Execute(cmd);

@@ -46,7 +46,7 @@ namespace posCoreModuleApi.Controllers
         {
             try
             {
-                cmd = "SELECT * FROM \"view_allProduct\" where \"parentProductID\" is null order by \"productID\" desc";
+                cmd = "SELECT * FROM \"view_allProduct\" where \"parentProductID\" is null or \"parentProductID\" = 0 order by \"productID\" desc";
                 var appMenu = dapperQuery.Qry<Product>(cmd, _dbCon);
                 return Ok(appMenu);
             }
