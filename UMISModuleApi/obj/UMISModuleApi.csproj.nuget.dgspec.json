@@ -38,13 +38,29 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Beiyuan.WebSystem.MailKit": {
+              "target": "Package",
+              "version": "[3.0.5, )"
+            },
             "Dapper": {
               "target": "Package",
               "version": "[2.0.90, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[5.0.1, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
             },
             "Npgsql": {
               "target": "Package",
@@ -57,6 +73,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.11.1, )"
+            },
+            "Zaabee.SmtpClient": {
+              "target": "Package",
+              "version": "[2021.2.0, )"
             }
           },
           "imports": [

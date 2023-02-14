@@ -145,7 +145,7 @@ namespace bachatOnlineApi.Controllers
         {
             try
             {
-                cmd = "select * from public.\"Order\" where status = 'pend' OR status is null or status = ''";
+                cmd = "select * from public.\"Order\" where status = 'pend' OR status is null or status = '' order by \"orderDate\" Desc";
                 var appMenu = dapperQuery.QryResult<Order>(cmd, _dbCon);
 
                 return Ok(appMenu);
@@ -460,9 +460,10 @@ namespace bachatOnlineApi.Controllers
                 var time = curTime.ToString("HH:mm");
 
                 int rowAffected = 0;
+                int rowAffected2 = 0;
                 var response = "";
 
-                cmd = "update public.\"Order\" set \"status\" = 'canl' where \"orderID\" = " + obj.orderID + ";";
+                cmd = "update public.\"Order\" set \"status\" = 'cancl' where \"orderID\" = " + obj.orderID + ";";
 
                 // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
 
@@ -471,9 +472,43 @@ namespace bachatOnlineApi.Controllers
                     rowAffected = con.Execute(cmd);
                 }
 
+                    
                 if (rowAffected > 0)
                 {
-                    response = "Success";
+                    cmd2 = "SELECT * FROM public.\"OrderDetail\" where \"orderID\" = " + obj.orderID + ";";
+                    var appMenuOrder = (List<OrderDetailCreation>)dapperQuery.QryResult<OrderDetailCreation>(cmd2, _dbCon);
+
+                    // //convert string to json data to insert in invoice detail table
+                    // var orderDetailObject = JsonConvert.DeserializeObject<List<OrderDetailCreation>>(appMenuOrder);
+
+
+                    //saving json data one by one in invoice detail table
+                    foreach (var item in appMenuOrder)
+                    {
+                        cmd2 = "select availableqty from \"productPrice\" where \"productID\" = " + item.productID + " and outletid = 1";
+                        var appMenuQty = (List<AvailProduct>)dapperQuery.QryResult<AvailProduct>(cmd2, _dbCon);
+
+                        var availableQty = appMenuQty[0].availableqty;
+
+                        var availQty = (availableQty + item.qty);
+
+                        cmd5 = "update public.\"productPrice\" set availableqty = " + availQty + " where \"productID\" = " + item.productID + " and outletid = 1 ";
+
+
+                        using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
+                        {
+                            rowAffected2 = con.Execute(cmd5);
+                        }
+
+                    }
+
+                    if(rowAffected2 > 0){
+                        response = "Success";
+                    }
+                    else
+                    {
+                        response = "Order did not exists";
+                    }
                 }
                 else
                 {

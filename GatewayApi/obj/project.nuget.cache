@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JVQDpofO71zPD/iKAeJ9xe5Pvr2VQsrfPaeZZDCVyH6jtMrH2dtMPWPJZBrYj+mTu9X9iiPN8SFh17Oll0vdww==",
+  "dgSpecHash": "JReEpyiXwBabrvkMf7yClh3+RVdoPE3KFxVY6uS6mAWlarihXER+7f5JoqAkKUEPgszgKhleVa5G/nmXfeoyog==",
   "success": true,
-  "projectFilePath": "E:\\projects\\sajidProject\\sajid-pos-api\\gatewayapi\\GatewayApi.csproj",
+  "projectFilePath": "E:\\projects\\sajidProject\\sajid-pos-api\\GatewayApi\\GatewayApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sys\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
     "C:\\Users\\sys\\.nuget\\packages\\fluentvalidation\\9.3.0\\fluentvalidation.9.3.0.nupkg.sha512",
