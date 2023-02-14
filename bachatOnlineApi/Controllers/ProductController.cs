@@ -162,7 +162,7 @@ namespace bachatOnlineApi.Controllers
         {
             try
             {
-                cmd = "select * from public.\"view_OrderDetail\" where \"orderID\" = " + orderID + " and \"createdBy\" = " + userID + "";
+                cmd = "select * from public.\"view_OrderDetail\" where \"orderID\" = " + orderID + " ";
                 var appMenu = dapperQuery.QryResult<OrderInformation>(cmd, _dbCon);
 
                 return Ok(appMenu);
