@@ -18,5 +18,6 @@ namespace bachatOnlineModuleApi.Entities
         public string price { get; set; }
         public string address { get; set; }
         public string orderDate { get; set; }
+        public float deliveryCharges { get; set; }
     }
 }

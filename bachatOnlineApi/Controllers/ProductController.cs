@@ -372,10 +372,10 @@ namespace bachatOnlineApi.Controllers
                         {
                             cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\", \"productID\", \"qty\",\"salePrice\", \"productQty\",\"productName\",\"createdOn\",\"createdBy\",\"isDeleted\") VALUES (" + invoiceNo + "," + item.productID + "," + item.qty + ",'" + item.salePrice + "'," + item.qty + ",'" + item.productName + "','" + curDate + "'," + item.userID + ",B'0')";
                         }
-                        else
-                        {
-                            cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\",\"salePrice\",\"createdOn\",\"createdBy\",\"isDeleted\",\"deliveryChargesID\") VALUES (" + invoiceNo + ",'" + item.salePrice + "','" + curDate + "'," + item.userID + ",B'0'," + item.deliveryChargesID + ")";
-                        }
+                        // else
+                        // {
+                        //     cmd4 = "INSERT INTO public.\"invoiceDetail\"(\"invoiceNo\",\"salePrice\",\"createdOn\",\"createdBy\",\"isDeleted\",\"deliveryChargesID\") VALUES (" + invoiceNo + ",'" + item.salePrice + "','" + curDate + "'," + item.userID + ",B'0'," + item.deliveryChargesID + ")";
+                        // }
                         
                         using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                         {
