@@ -463,7 +463,7 @@ namespace bachatOnlineApi.Controllers
                 int rowAffected2 = 0;
                 var response = "";
 
-                cmd = "update public.\"Order\" set \"status\" = 'cancl' where \"orderID\" = " + obj.orderID + ";";
+                cmd = "update public.\"Order\" set \"status\" = 'canl' where \"orderID\" = " + obj.orderID + ";";
 
                 // cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\", \"createdOn\", \"isDeleted\") values ('" + obj.orderDate + "', '" + obj.customerName + "', " + obj.email + ", " + obj.mobile + ", '" + obj.address + "', '" + curDate + "', B'0')";
 
