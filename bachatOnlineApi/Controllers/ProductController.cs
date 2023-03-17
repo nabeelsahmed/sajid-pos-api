@@ -254,7 +254,7 @@ namespace bachatOnlineApi.Controllers
                 DateTime curDate = DateTime.Today;
                 DateTime curTime = DateTime.Now;
 
-                var time = curTime.ToString("HH:mm");
+                var time = curTime.ToString("hh:mm tt");
 
                 int rowAffected = 0;
                 int rowAffected2 = 0;
@@ -262,7 +262,7 @@ namespace bachatOnlineApi.Controllers
                 var response = "";
                 List<Order> appMenuOrder = new List<Order>();
 
-                cmd = "insert into public.\"Order\" (\"orderDate\", \"customerName\", \"email\", \"mobile\", \"address\",\"status\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "','' ,'" + curDate + "', B'0')";
+                cmd = "insert into public.\"Order\" (\"orderDate\",\"orderTime\", \"customerName\", \"email\", \"mobile\", \"address\",\"status\", \"createdOn\", \"isDeleted\") values ('" + curDate + "', '" + time + "', '" + obj.customerName + "', '" + obj.email + "', '" + obj.mobile + "', '" + obj.address + "','' ,'" + curDate + "', B'0')";
 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))
                 {

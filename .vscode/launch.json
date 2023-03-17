@@ -9,9 +9,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bachatOnlineApi/bin/Debug/net5.0/bachatOnlineApi.dll",
+      "program": "${workspaceFolder}/poscoremoduleApi/bin/Debug/net5.0/poscoremoduleApi.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/bachatOnlineApi",
+      "cwd": "${workspaceFolder}/poscoremoduleApi",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",

@@ -8,6 +8,7 @@ namespace bachatOnlineModuleApi.Entities
     {
         public int orderID { get; set; }
         public string orderDate { get; set; }
+        public string orderTime { get; set; }
         public string customerName { get; set; }
         public string email { get; set; }
         public string mobile { get; set; }
