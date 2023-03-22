@@ -281,11 +281,11 @@ namespace UMISModuleAPI.Controllers
                 {
                     if (obj.userTypeID == 1)
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "'," + obj.outletid + ", '" + obj.dateOfBirth + "', '" + obj.gender + "' ,'" + curDate + "', 0," + obj.userTypeID + ")";
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\", \"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\",\"email\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "'," + obj.outletid + ", '" + obj.dateOfBirth + "', '" + obj.gender + "' ,'" + curDate + "', 0," + obj.userTypeID + ",'" + obj.email + "')";
                     }
                     else
                     {
-                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",\"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ")";    
+                        cmd2 = "insert into public.\"users\" (\"userID\",\"empName\", \"loginName\", \"Password\",\"outletid\", \"dateOfBirth\", \"gender\", \"createdOn\", \"isDeleted\", \"userTypeID\",\"email\") values ("+newUserID+",'" + obj.empName + "','" + obj.loginName + "','" + obj.Password + "',1,'" + obj.dateOfBirth + "','" + obj.gender + "', '" + curDate + "', 0," + obj.userTypeID + ",'" + obj.email + "')";    
                     }
                     
                     //cmd4 = "insert into public.\"user_roles\" (\"userRoleId\",\"roleId\", \"userId\",\"createdOn\", \"isDeleted\") VALUES ('"+newRoleID+"',1,'" +newUserID+ "','" + curDate + "', 0)";
@@ -376,11 +376,11 @@ namespace UMISModuleAPI.Controllers
                 // appMenuUser = (List<userCreation>)dapperQuery.QryResult<userCreation>(cmd, _dbCon);
                 if (obj.userTypeID == 1)
                 {
-                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"',\"outletid\" = '"+ obj.outletid +"', \"modifiedOn\" = '" + curDate + "' where \"userID\"="+obj.userID+"";    
+                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"',\"outletid\" = '"+ obj.outletid +"', \"modifiedOn\" = '" + curDate + "',\"email\" = '" + obj.email + "' where \"userID\"="+obj.userID+"";    
                 }
                 else
                 {
-                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDocPath + "' where \"userID\"="+obj.userID+"";
+                    cmd = "update public.\"users\" set \"empName\" = '" + obj.empName + "', \"loginName\" = '" + obj.loginName +"' ,\"dateOfBirth\" = '"+ obj.dateOfBirth +"',\"gender\" = '"+ obj.gender +"', \"modifiedOn\" = '" + curDate + "', \"applicationEDoc\" = '" + obj.applicationEDocPath + "',\"email\" = '" + obj.email + "' where \"userID\"="+obj.userID+"";
                 }
                 
                 using (NpgsqlConnection con = new NpgsqlConnection(_dbCon.Value.dbCon))

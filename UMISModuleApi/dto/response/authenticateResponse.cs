@@ -14,7 +14,7 @@ namespace UMISModuleAPI.Models
         public string isPinCode { get; set; }
         public string token { get; set; }
         public int outletid { get; set; }
-
+        public string email { get; set; }
 
         public AuthenticateResponse(List<User> user, string userToken)
         {
@@ -25,6 +25,7 @@ namespace UMISModuleAPI.Models
             password = user[0].password;
             isPinCode = user[0].isPinCode;
             outletid = user[0].outletid;
+            email = user[0].email;
             token = userToken;
         }
     }
