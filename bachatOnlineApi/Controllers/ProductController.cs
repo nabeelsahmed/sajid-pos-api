@@ -269,15 +269,17 @@ namespace bachatOnlineApi.Controllers
                     rowAffected = con.Execute(cmd);
                 }
 
+                cmd2 = "SELECT \"orderID\" FROM public.\"Order\" order by \"orderID\" desc limit 1";
+                appMenuOrder = (List<Order>)dapperQuery.QryResult<Order>(cmd2, _dbCon);
+
+                var orderID = appMenuOrder[0].orderID;
+
                 //confirmation of data saved in order table
                 if (rowAffected > 0)
                 {
 
                     // //getting last saved invoice no
-                    cmd2 = "SELECT \"orderID\" FROM public.\"Order\" order by \"orderID\" desc limit 1";
-                    appMenuOrder = (List<Order>)dapperQuery.QryResult<Order>(cmd2, _dbCon);
-
-                    var orderID = appMenuOrder[0].orderID;
+                    
 
                     //convert string to json data to insert in invoice detail table
                     var invObject = JsonConvert.DeserializeObject<List<OrderDetailCreation>>(obj.json);
@@ -312,7 +314,7 @@ namespace bachatOnlineApi.Controllers
 
                 if (rowAffected > 0 && rowAffected2 > 0)
                 {
-                    response = "Success";
+                    response = "Success|||" + orderID.ToString() + "";
                 }
                 else
                 {
